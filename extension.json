@@ -1,0 +1,21 @@
+{
+    "name": "LabNotebook",
+    "version": "0.1",
+    "author": ["Yardena Cohen"],
+    "url": "https://openwetware.org/",
+    "descriptionmsg": "labnotebook-desc",
+    "license-name": "GPL3",
+    "type": "other",
+    "AutoloadClasses": {
+        "SpecialLabNotebook": "LabNotebook_body.php"
+    },
+    "SpecialPages": {
+        "LabNotebook": "SpecialLabNotebook"
+    },
+    "MessagesDirs": {
+        "MyExtension": [
+            "i18n"
+        ]
+    },
+    "manifest_version": 1
+}

@@ -1,0 +1,9 @@
+{
+    "@metadata": {
+        "authors": [
+            "Yardena Cohen"
+        ]
+    },
+    "labnotebook": "Lab Notebook",
+    "labnotebook-desc": "This implements OpenWetWare's Lab Notebooks"
+}
