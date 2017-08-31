@@ -67,8 +67,8 @@ function getDateList($base, $year, $month){
 	$text = $t->getText();
         $text = str_replace(' ', '_', $text);
 
-	// get the db read pointer
-	$dbr =& wfGetDB(DB_SLAVE);
+	// get the db read not-a-pointer
+	$dbr = wfGetDB(DB_SLAVE);
 
 	// format and execute the query
         $query = "SELECT page_title FROM " . $dbr->tableName('page') . "  where page_namespace = $ns AND " . 
