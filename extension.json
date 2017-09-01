@@ -1,13 +1,14 @@
 {
-    "name": "LabNotebook2",
-    "version": "0.2",
-    "author": ["Yardena Cohen"],
+    "name": "LabNotebook",
+    "version": "0.3",
+    "author": ["Bill Flanagan","Yardena Cohen"],
     "url": "https://openwetware.org/",
     "descriptionmsg": "labnotebook-desc",
     "license-name": "GPL3",
     "type": "other",
     "AutoloadClasses": {
-        "SpecialLabNotebook2": "LabNotebook_body.php"
+        "SpecialLabNotebook2": "LabNotebook_body.php",
+        "LabNotebookFunctions": "includes/LabNotebookVariables.php"
     },
     "SpecialPages": {
         "LabNotebook2": "SpecialLabNotebook2"

@@ -1,13 +1,5 @@
 <?php
 
-$wgExtensionCredits['parserhook'][] = array(
-'name'         => 'LabNotebookVar',
-'version'      => '1.0.0', // Jan 28, 2008.
-'description'  => 'Lab Notebook Functions',
-'author'       => 'Bill Flanagan',
-'url'          => 'http://meta.openwetware.org/wiki/LabNotebookVar',
-);
-
 $wgExtensionFunctions[] = 'wfLabNotebookFunctions';
 
 $wgHooks['LanguageGetMagic'][] = 'wfLabNotebookFunctionsLanguageGetMagic';
