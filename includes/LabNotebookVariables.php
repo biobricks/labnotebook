@@ -296,7 +296,7 @@ class LabNotebookFunctions{
         if (strlen($current) <= 10){
             return '';
 	}
-	$date =  $this->lndate(&$parser, $current);
+	$date =  $this->lndate($parser, $current);
         if ($date == ''){
             return '';
 	}
@@ -321,7 +321,7 @@ class LabNotebookFunctions{
 	if (strlen($current) <= 10){
             return '';
 	}
-        $date =  $this->lndate(&$parser, $current);
+        $date =  $this->lndate($parser, $current);
         if ($date == ''){
             return '';
 	}
@@ -413,7 +413,7 @@ class LabNotebookFunctions{
                         break;
 
                 case "THISDATE":
-                        $p = $this->lndate(&$parser, $wgTitle->getText());
+                        $p = $this->lndate($parser, $wgTitle->getText());
                         break;
 
                 case "LOGGEDIN":
@@ -421,11 +421,11 @@ class LabNotebookFunctions{
                         break;
 
                 case "THISUSER":
-                        $p = $this->lnuser(&$parser, $wgTitle->getText());
+                        $p = $this->lnuser($parser, $wgTitle->getText());
                         break;
 
                 case "PREVDAY":
-			$date = $this->lndate(&$parser, $wgTitle->getText());
+			$date = $this->lndate($parser, $wgTitle->getText());
 			if ($date)
 			    $p = $this->datechange ($date, -1);
 			else
@@ -433,7 +433,7 @@ class LabNotebookFunctions{
                         break;
 
                 case "NEXTDAY":
-                        $date = $this->lndate(&$parser, $wgTitle->getText());
+                        $date = $this->lndate($parser, $wgTitle->getText());
                         if ($date)
                             $p = $this->datechange ($date, 1);
                         else
