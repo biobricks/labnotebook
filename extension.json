@@ -18,5 +18,10 @@
             "i18n"
         ]
     },
+    "Hooks": {
+        "EditPage::showEditForm:initial": [
+            "wfLabNotebookPrepend"
+        ]
+    },
     "manifest_version": 1
 }
