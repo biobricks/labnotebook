@@ -27,7 +27,7 @@
         "LabNotebookAlias": "i18n/LabNotebook.i18n.alias.php"
     },
     "ResourceModules": {
-        "ext.LabNotebook": {
+        "ext.LabNotebook.oneclick": {
             "scripts": [
                 "js/oneclick.js"
             ]
