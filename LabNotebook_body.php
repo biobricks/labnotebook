@@ -4,9 +4,9 @@ if (!defined('MEDIAWIKI')) { exit; }
 
 $wgExtensionCredits['specialpage'][] = array(
     'path' => __FILE__,
-    'name' => 'LabNotebook2',
-    'version' => '0.1',
-    'author' => 'Yardena Cohen',
+    'name' => 'LabNotebook',
+    'version' => '0.3',
+    'author' => array('Yardena Cohen','Bill Flanagan'),
     'url' => 'https://openwetware.org/',
     'descriptionmsg' => "labnotebook-desc",
     'license-name' => 'GPL3'
