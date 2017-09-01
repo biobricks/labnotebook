@@ -134,8 +134,8 @@ function renderLNCalendar($input) {
     $month = trim(getLNCalendarOptions($input, "month", ""));
     $year = trim(getLNCalendarOptions($input, "year", ""));
     $type = trim(getLNCalendarOptions($input, "type", "C"));
-    $jsfile = trim(getLNCalendarOptions($input, "javascriptfile", "/js/calendar.js"));
-    $cssfile = trim(getLNCalendarOptions($input, "cssfile", "owwnotebook.css"));
+    $jsfile = trim(getLNCalendarOptions($input, "javascriptfile", "/mediawiki/extensions/LabNotebook/js/calendar.js"));
+    $cssfile = trim(getLNCalendarOptions($input, "cssfile", "/mediawiki/extensions/LabNotebook/css/owwnotebook.css"));
 
     wfDebug("renderLNCalendar:page = $page\n");
     $pageTitle = Title::newFromText($page);

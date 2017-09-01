@@ -1,0 +1,118 @@
+/* ************************************************** 
+ * Calendar default style
+ * ************************************************** */
+.OWWNBcpYearNavigation,
+.OWWNBcpMonthNavigation{
+	background-color:#EEEEEE;
+	text-align:center;
+	vertical-align:middle;
+	text-decoration:none;
+}
+.OWWNBcpDayColumnHeader,
+.OWWNBcpYearNavigation,
+.OWWNBcpMonthNavigation,
+.OWWNBcpCurrentMonthDate,
+.OWWNBcpCurrentMonthDateFilled,
+.OWWNBcpCurrentMonthDateDisabled,
+.OWWNBcpOtherMonthDate,
+.OWWNBcpOtherMonthDateFilled,
+.OWWNBcpOtherMonthDateDisabled,
+.OWWNBcpCurrentDate,
+.OWWNBcpCurrentDateFilled,
+.OWWNBcpCurrentDateDisabled,
+.OWWNBcpTodayText,
+.OWWNBcpTodayTextFilled,
+.OWWNBcpTodayTextDisabled,
+.OWWNBcpText{
+	font-family:arial;
+	font-size:8pt;
+}
+TD.OWWNBcpDayColumnHeader{
+	text-align:right;
+	border-color:#CCCCCC;
+	border-width:0 0 1px 0;
+}
+.OWWNBcpCurrentMonthDateFilled,
+.OWWNBcpCurrentMonthDate,
+.OWWNBcpOtherMonthDateFilled,
+.OWWNBcpOtherMonthDate,
+.OWWNBcpCurrentDateFilled,
+.OWWNBcpCurrentDate{
+	text-align:right;
+	text-decoration:none;
+}
+.OWWNBcpCurrentMonthDateDisabled,
+.OWWNBcpOtherMonthDateDisabled,
+.OWWNBcpCurrentDateDisabled{
+	color:#D0D0D0;
+	text-align:right;
+	text-decoration:line-through;
+}
+.OWWNBcpCurrentMonthDateFilled,
+.OWWNBcpOtherMonthDateFilled,
+.OWWNBcpCurrentDateFilled{
+	color:#333333;
+	background-color: #c5d0ea;
+	text-align:right;
+}
+.OWWNBcpCurrentMonthDateFilled{
+}
+.OWWNBcpCurrentMonthDate{
+}
+.OWWNBcpCurrentDate{
+	color: #FFFFFF;
+	font-weight:bold;
+}
+.OWWNBcpCurrentDateFilled{
+	color: #FFFFFF;
+	background-color: #328ac8;
+	font-weight:bold;
+}
+.OWWNBcpOtherMonthDate{
+	color:#808080;
+}
+.OWWNBcpOtherMonthDateFilled{
+	color:#909090;
+}
+TD.OWWNBcpCurrentDate{
+	color:#FFFFFF;
+	background-color: #328ac8;
+	border-width:1px;
+	border:solid thin #328ac8;
+}
+TD.OWWNBcpCurrentDateFilled{
+	color:#FFFFFF;
+	background-color: #328ac8;
+	border-width:1px;
+	border:solid thin #328ac8;
+}
+TD.OWWNBcpCurrentDateDisabled{
+	border-width:1px;
+	border:solid thin #CCCCCC;
+}
+TD.OWWNBcpTodayText,
+TD.OWWNBcpTodayTextDisabled,
+TD.OWWNBcpTodayTextFilled{
+	border:solid thin #CCCCCC;
+	border-width:1px 0 0 0;
+}
+A.OWWNBcpTodayText,
+A.OWWNBcpTodayTextFilled,
+SPAN.OWWNBcpTodayTextDisabled{
+	height:20px;
+}
+A.OWWNBcpTodayText,
+A.OWWNBcpTodayTextFilled{
+	font-weight:bold;
+}
+SPAN.OWWNBcpTodayTextDisabled{
+	color:#D0D0D0;
+}
+SPAN.OWWNBcpTodayTextFilled{
+	color:#FFFFFF;
+        background-color:#000000;
+}
+.OWWNBcpBorder{
+	border: 0px;
+}
+
