@@ -14,7 +14,6 @@ class NewNotebookDo extends ApiBase{
         var $entryName = "Entry Base";
         var $error = '';
         var $message = '';
-        var $loggingEnabled = true;
         var $testMode = false;
         var $project = '';
         var $base = '';
@@ -24,7 +23,6 @@ class NewNotebookDo extends ApiBase{
         var $year = '';
         var $page = '';
         var $nbContent = '';
-	var $logFile = "/data/web/storage/labnotebook/oneclick.log";
 
     public function getAllowedParams() {
         return array(
@@ -116,9 +114,9 @@ class NewNotebookDo extends ApiBase{
         }
 
 	function setProjectText($content, $project){
-		$this->log("Content before: $content");
+		wfDebug("Content before: $content");
 		$content = str_replace('#PROJECT#',$project, $content);
-		$this->log("Content after: $content");
+		wfDebug("Content after: $content");
 		return $content;
 	}
 
@@ -248,35 +246,6 @@ class NewNotebookDo extends ApiBase{
 		return $data;
 	}
 
-	function viewLog(){
-		global $wgOut;
-
-		$cnt = 1;
-		$data = array();
-		$notebooks = array();
-		if ($this->logFile && is_file($this->logFile)){
-        		$content = file($this->logFile);
-			foreach ($content as $line){
-				if (strpos($line, "createContent: base=") !== false){
-					if (!empty($output)){
-						$data = $this->getLabInfo($cnt, $output);
-						$cnt++;
-						$notebooks[] = $data;
-						$output = '';
-					}
-				}
-				$output .= $line."<br />\n";
-			}
-                        if (!empty($output)){
-                                $data = $this->getLabInfo($cnt, $output);
-				$notebooks[] = $data;
-                        }
-			$this->renderTable($notebooks);
-		}else{
-			$wgOut->addHtml('Log file is empty.<br />');
-        	}
-	}
-
         function renderTable($nbs){
                 foreach ($nbs[0] as $n => $v){
                		$headers[] = str_replace("'", "\'", $n);
@@ -297,18 +266,6 @@ class NewNotebookDo extends ApiBase{
 		$this->renderGrid($headers, $cells,
 			 '/js/os3grid.js', '/css/os3grid.css', $pages, $types);
         }
-
-	function log($l){
-		global $wgUser;
-
-		if ($this->loggingEnabled && $this->logFile){
-			$u = $wgUser->getName();
-			$f = fopen($this->logFile, "a");
-			$d = date('c');
-			fwrite($f, "$d:[$u] [[$l]]\n");
-			fclose($f);
-		}
-	}
 
 	public function execute() {
 		global $wgUser;
@@ -426,7 +383,7 @@ class NewNotebookDo extends ApiBase{
 	}
 
 	function createContent(){
-		$this->log("createContent: " .
+		wfDebug("createContent: " .
 			"base=$this->base, " .
 			"project=$this->project, " .
 			"type=$this->type");
@@ -436,7 +393,7 @@ class NewNotebookDo extends ApiBase{
 		$t = Title::newFromText($nb);
 		if (!$t->exists()){
 			$this->setPage($nb, $this->notebookContent);
-			$this->log("created page $nb");
+			wfDebug("created page $nb");
 		}
 
 		// see if the project page exists
@@ -448,10 +405,10 @@ class NewNotebookDo extends ApiBase{
 		}
 		//$projectContent = $this->setProjectText($projectContent, $this->project); 
                 $projectTitle = Title::newFromText($p);
-		$this->log("ProjectContent: $projectContent.");
+		wfDebug("ProjectContent: $projectContent.");
                 if (!$projectTitle->exists()){
 			$this->setPage($p, $projectContent);
-			$this->log("created page $p");
+			wfDebug("created page $p");
 		}else{
 			// exit: project already exists
 			$this->error = "Project page exists";
@@ -469,9 +426,9 @@ class NewNotebookDo extends ApiBase{
 		$entryBaseTitle = Title::newFromText($e);
                 if (!$entryBaseTitle->exists()){
 			// save the page. 
-			$this->log("Setting $e with the contents of page $entryContent.");
+			wfDebug("Setting $e with the contents of page $entryContent.");
 			$this->setPage($e, $entryContent);
-			$this->log("created page $e");
+			wfDebug("created page $e");
 		}
 		$this->saveDetails($nb, $p);
 	}
@@ -492,35 +449,34 @@ class NewNotebookDo extends ApiBase{
 		$t = Title::newFromText($page);
 		$result = $t->exists();
 		if (!$result)
-			$this->log("page $page doesn't exist.\n");
+			wfDebug("page $page doesn't exist.\n");
 		return $result;
 	}
 
 	// create and fill a page if it's not already there.
 	function setPage($name, $contentPage){
-		$this->log("setPage: called with $name and $contentPage");
+		wfDebug("setPage: called with $name and $contentPage");
 		$t = Title::newFromText($name);
 		if (!$t->exists()){
-			$this->log("attempting to create page $name");
+			wfDebug("attempting to create page $name");
 			$content = $this->getContent($contentPage);
 			$content->mText = str_replace($this->categoryTag, '', $content->mText);
             $a = WikiPage::factory($t);
-			$this->log("setPage: new article created for page $name");
-			// $this->log("setPage: content=$content");
+			wfDebug("setPage: new article created for page $name");
 			if ($this->testMode == false){
         			$output = $a->doEditContent($content, 
 					"Autocreated Lab Notebook name=$name,".
 					" content from $contentPage", 
 					EDIT_NEW);
 			}
-			$this->log("setPage: content added to page $name");
+			wfDebug("setPage: content added to page $name");
     		}
 	}
 
 	// get the default page content
 	function getContent($page){
 		// get the name
-		$this->log("getContent: reading page $page");
+		wfDebug("getContent: reading page $page");
 	
 		$page = str_replace(" ", "_", $page);
 		$t = Title::newFromText($page);
@@ -528,11 +484,11 @@ class NewNotebookDo extends ApiBase{
 		// see if the page exists
 		if ($t && $t->exists()){
 	        	// it does. get the article
-			$this->log("getContent: page $page exists.");
+			wfDebug("getContent: page $page exists.");
 			$a = WikiPage::factory($t);
 
 			// retrieve the content
-			$this->log("getContent: read article $page");
+			wfDebug("getContent: read article $page");
 			$wt = $a->getContent();
 			return $wt;
 		}
