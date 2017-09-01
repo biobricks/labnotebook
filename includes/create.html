@@ -1,6 +1,6 @@
 <html>
 <div id="form_body" class="forms_body">
-<form action="/um/um_process_oneclick.php" name="OneClick" 
+<form action="/mediawiki/api.php?action=newnotebook" name="OneClick" 
     id="OneClick" onsubmit="return EntryCheck();" method="POST">
 <input type="hidden" name="Username" value="" />
 <input type="hidden" name="CurrentURL" value="" />
@@ -12,7 +12,7 @@
       </span>
     </td>
     <td valign="top" align="left">
-      <select name="Type" onchange='ShowURL();' id="Type">
+      <select name="type" onchange='ShowURL();' id="type">
         <option value="IGEM">IGEM</option>
         <option value="USER">User</option>
         <option value="LAB">Lab</option>
@@ -95,9 +95,4 @@
 </form>
 </div>
 <div id="message_body"></div>
-<script type="text/javascript">
-if (!loadMessage()){
-  ShowURL();
-}
-</script>
 </html>

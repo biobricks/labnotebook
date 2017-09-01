@@ -1,13 +1,10 @@
 <?php
 
-require_once ('Exception.php');
-require_once (dirname(__FILE__).'/LabNotebook.php');
+class NewNotebookDo extends ApiBase{
 
-class CreateNotebook{
-
-	var $oneClickPage = '/wiki/Help:Notebook/One_Click_Setup';
+	var $oneClickPage = '/wiki/Special:NewNotebook';
 	var $categoryTag = '[[category:OWWLabNotebookV1]]';
-	var $nbErrors = '';
+	var $nbErrors = array();
         var $notebookContent = "MediaWiki:NotebookContentDefault";
         var $projectContent = "MediaWiki:ProjectContentDefault";
         var $entryContent = "MediaWiki:EntryContentDefault";
@@ -23,12 +20,23 @@ class CreateNotebook{
         var $base = '';
         var $type = '';
         var $username = '';
-        var $lab = '';
-        var $institution = '';
+        var $who = '';
         var $year = '';
         var $page = '';
         var $nbContent = '';
 	var $logFile = "/data/web/storage/labnotebook/oneclick.log";
+
+    public function getAllowedParams() {
+        return array(
+            'type' => 'USER',
+            'project' => 'a project',
+            'who' => 'a uni, lab or user',
+        );
+    }
+
+	public function isWriteMode() {
+		return true;
+	}
 
 	function renderGrid($headers, $cells, $jsLocation, $cssLocation, 
 			$pages='', $types=''){
@@ -54,7 +62,7 @@ class CreateNotebook{
 		return true;
 	}
 
-	function CreateNotebook(){
+	function __construct(){
 
                 global $wgIGEMCurrentYear;
 		$this->nbErrors = array(
@@ -302,12 +310,13 @@ class CreateNotebook{
 		}
 	}
 
-	function execute(){
+	public function execute() {
 		global $wgUser;
 
-		$this->lab = str_replace("'", '', $this->lab);
-		$this->project = str_replace("'", '', $this->project);
-		$this->institution = str_replace("'", '', $this->institution);
+        $params = $this->extractRequestParams();
+        $this->type = $params['type'];
+        $this->project = str_replace("'", '', $params['project']);
+        $this->who = str_replace("'", '', $params ['who']);
 
 		// is user logged in?
 		if (!$wgUser->isLoggedIn()){
@@ -319,33 +328,36 @@ class CreateNotebook{
 
 		switch($this->type){
 		    case 'LAB':
-			if (!$this->lab){
+			if (!$this->who){
                                 $this->error = $this->nbErrors["nberrornolabinreq"];
+                                $this->getResult()->addValue( null, 'newnotebook', 'no lab, we are redirecting you' );
                                 return $cn->redirect();
                         }
                         // Add the prefix and the current IGEM year
-                        $labPage = Title::newFromText($this->lab);
+                        $labPage = Title::newFromText($this->who);
                         if (!$labPage || !$labPage->exists()){
-				$this->error = str_replace('$1', $this->lab, 
+				$this->error = str_replace('$1', $this->who, 
 					$this->nbErrors['nberrornolab']);
+                $this->getResult()->addValue( null, 'newnotebook', 'no lab, we are redirecting you' );
                                 return $this->redirect();
                         }
-                        $this->base = $this->lab.":";
+                        $this->base = $this->who.":";
 			$this->page = $this->base.'Notebook'.'/'.$this->project;
 			break;
 
 		   case 'IGEM':
-                        if (!$this->institution){
-				$this->error = str_replace('$1', $this->lab, 
+                        if (!$this->who){
+				$this->error = str_replace('$1', $this->who, 
 					$this->nbErrors['nberrornoinstitutioninreq']);
+                $this->getResult()->addValue( null, 'newnotebook', 'no institution, we are redirecting you' );
                                 return $cn->redirect();
                         }
 			// add the prefix and the current IGEM year
-			$team = "IGEM:$this->institution/$this->year";
+			$team = "IGEM:$this->who/$this->year";
 			$teamPage = Title::newFromText($team);
 			if (is_object(!$teamPage) && !$teamPage->exists()){
-				$aTeamPage = new Article($teamPage);
-                                $aTeamPage->doEdit("Welcome to OpenWetWare, " . $this->institution . ". Please customize your IGEM page",
+				$aTeamPage = WikiPage::factory($teamPage);
+                                $aTeamPage->doEditContent("Welcome to OpenWetWare, " . $this->who . ". Please customize your IGEM page",
                                         "Autocreated IGEM Team page. name=$team.", EDIT_NEW);
 			}
 			$this->base = $team.'/';
@@ -358,6 +370,7 @@ class CreateNotebook{
 			if (!$wgUser->getUserPage()){
 				$this->error = str_replace('$1', $wgUser->getName(), 
 					$this->nbErrors['nberrornouserpage']);
+                $this->getResult()->addValue( null, 'newnotebook', 'no user page, we are redirecting you' );
 				return $this->redirect();
  			}
 			$userPageTitle = $wgUser->getUserPage();
@@ -369,6 +382,7 @@ class CreateNotebook{
 			$this->error = str_replace('$1', $this->type, 
 				$this->nbErrors['nberrorinvalidtype']);
 			$this->error = "Invalid type specified";
+            $this->getResult()->addValue( null, 'newnotebook', 'error or invalid type, we are redirecting you' );
 			return $this->redirect();
 		}
 
@@ -379,11 +393,13 @@ class CreateNotebook{
 			$this->error = str_replace('$1', $this->project, 
 				$this->nbErrors['nberrorprojectexists']);
 			$this->error = str_replace('$2', $this->base, $this->error);
+            $this->getResult()->addValue( null, 'newnotebook', 'duplicate, we are redirecting you' );
 			return $this->redirect();
 		}
 
 		// good to go. create the pages.
 		$this->createContent($this->base);
+		$this->getResult()->addValue( null, 'newnotebook', 'success, we are redirecting you' );
 		return $this->redirect();
 	}
 
@@ -464,8 +480,8 @@ class CreateNotebook{
 		$ln = new LabNotebook();
 		$ln->setType($this->type);
 		$ln->setProject($this->project);
-		$ln->setInstitution($this->institution);
-		$ln->setLab($this->lab);
+		$ln->setInstitution($this->who);
+		$ln->setLab($this->who);
 		$ln->setPageName($projectPage);
 		$ln->setBasePageName($basePage);
 		$ln->save();
@@ -487,12 +503,12 @@ class CreateNotebook{
 		if (!$t->exists()){
 			$this->log("attempting to create page $name");
 			$content = $this->getContent($contentPage);
-			//$content='this is a test';
-        		$a = new Article($t);
+			$content->mText = str_replace($this->categoryTag, '', $content->mText);
+            $a = WikiPage::factory($t);
 			$this->log("setPage: new article created for page $name");
 			// $this->log("setPage: content=$content");
 			if ($this->testMode == false){
-        			$output = $a->doEdit($content, 
+        			$output = $a->doEditContent($content, 
 					"Autocreated Lab Notebook name=$name,".
 					" content from $contentPage", 
 					EDIT_NEW);
@@ -513,16 +529,11 @@ class CreateNotebook{
 		if ($t && $t->exists()){
 	        	// it does. get the article
 			$this->log("getContent: page $page exists.");
-			$a = new Article($t);
+			$a = WikiPage::factory($t);
 
 			// retrieve the content
 			$this->log("getContent: read article $page");
 			$wt = $a->getContent();
-
-			// remove the category tag from the template
-			$wt = str_replace($this->categoryTag, '', $wt);
-
-			// return the filtered page text
 			return $wt;
 		}
     		return '';

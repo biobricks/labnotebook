@@ -9,7 +9,9 @@
     "AutoloadClasses": {
         "NewNotebook": "LabNotebook_body.php",
         "LabNotebookFunctions": "includes/LabNotebookVariables.php",
-        "LabNotebookCalendar": "includes/LNCalendar.php"
+        "LabNotebookCalendar": "includes/LNCalendar.php",
+        "NewNotebookDo": "includes/CreateNotebook.php",
+        "LabNotebook": "includes/LabNotebook.php"
     },
     "SpecialPages": {
         "NewNotebook": "NewNotebook"
@@ -44,6 +46,13 @@
                 "css/owwnotebook.css"
             ]
         }
+    },
+    "ResourceFileModulePaths": {
+        "localBasePath": "",
+        "remoteExtPath": "LabNotebook"
+    },
+    "APIModules": {
+        "newnotebook": "NewNotebookDo"
     },
     "manifest_version": 1
 }

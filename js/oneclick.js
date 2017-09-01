@@ -16,12 +16,6 @@ function getArgs() {
     }
     return args;                               // Return the object.
 }
-function isLoggedIn(){
-  if (wgUserName == null){
-    return false;
-  }
-  return true;
-}
 function changeDisplayById(id,val){
   if (document.getElementById){
     var nodeObj = document.getElementById(id);
@@ -38,8 +32,8 @@ function EntryCheck(){
   alert('Project must be specified');
   return false;
  }
- var opt = document.forms.OneClick.Type.selectedIndex;
- var type = document.forms.OneClick.Type.options[opt];
+ var opt = document.forms.OneClick.type.selectedIndex;
+ var type = document.forms.OneClick.type.options[opt];
  switch (type.value){
   case 'IGEM':
     if (!document.forms.OneClick.Institution.value){
@@ -70,9 +64,9 @@ function MakePageName(){
   if (project){
     project = project.capitalize();
   }
-  document.forms.OneClick.Username.value = wgUserName;
-  var opt = document.forms.OneClick.Type.selectedIndex;
-  var type = document.forms.OneClick.Type.options[opt];
+    document.forms.OneClick.Username.value = mw.config.get('wgUserName');
+  var opt = document.forms.OneClick.type.selectedIndex;
+  var type = document.forms.OneClick.type.options[opt];
   var url = '';
   switch (type.value){
     case 'IGEM':
@@ -91,7 +85,7 @@ function MakePageName(){
       if (project.length == 0)
         url= '';
       else
-        url = user+':'+wgUserName+'/'+ notebook+'/'+project;
+          url = user+':'+mw.config.get('wgUserName')+'/'+ notebook+'/'+project;
       break;
     case 'LAB':
       changeDisplayById('LabRow','on');
@@ -106,7 +100,7 @@ function MakePageName(){
   return url;
 }
 function ShowURL(){
-    if (!isLoggedIn()){
+    if (!mw.config.exists('wgUserName')){
       alert ('You must be logged in to create a new Notebook.');
       window.location = "/wiki/Special:Userlogin&returnto=Help:Notebook/One_Click_Setup";
     }
@@ -136,9 +130,15 @@ function loadMessage(){
         "  alt='Owwnotebook_icon.png' /><br />"+
         "<span style=\"font-size: 20px; font-weight: bold;\">Error</span><br />"+
             args.Message+"<br />"+
-            "Click <a href='/wiki/Help:Notebook/One_Click_Setup'>here</a> to continue";
+            "Click <a href='/wiki/Special:NewNotebook'>here</a> to continue";
     }
     return true;
   }
   return false; 
 }
+
+jQuery(document).ready(function($) {
+    if (!loadMessage()){
+        ShowURL();
+    }
+});
