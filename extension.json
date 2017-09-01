@@ -26,5 +26,12 @@
     "ExtensionMessagesFiles": {
         "LabNotebookAlias": "i18n/LabNotebook.i18n.alias.php"
     },
+    "ResourceModules": {
+        "ext.LabNotebook": {
+            "scripts": [
+                "js/oneclick.js"
+            ]
+        }
+    },
     "manifest_version": 1
 }
