@@ -1,11 +1,6 @@
 <?php
 
-require('ums/um_functions.php');
-require('ums/um_mediawiki.php');
-require('ums/um_updadmins.php');
-# Database connection handles
-
-require_once ("LabNotebook/CreateNotebook.php");
+require_once ("includes/CreateNotebook.php");
 
 function unescapeChars($str){
 	$str = str_replace("%27", "''", $str);
