@@ -7,11 +7,11 @@
     "license-name": "GPL3",
     "type": "other",
     "AutoloadClasses": {
-        "SpecialLabNotebook2": "LabNotebook_body.php",
+        "NewNotebook": "LabNotebook_body.php",
         "LabNotebookFunctions": "includes/LabNotebookVariables.php"
     },
     "SpecialPages": {
-        "LabNotebook2": "SpecialLabNotebook2"
+        "NewNotebook": "NewNotebook"
     },
     "MessagesDirs": {
         "MyExtension": [
@@ -22,6 +22,9 @@
         "EditPage::showEditForm:initial": [
             "wfLabNotebookPrepend"
         ]
+    },
+    "ExtensionMessagesFiles": {
+        "LabNotebookAlias": "i18n/LabNotebook.i18n.alias.php"
     },
     "manifest_version": 1
 }

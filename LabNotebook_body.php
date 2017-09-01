@@ -12,9 +12,9 @@ $wgExtensionCredits['specialpage'][] = array(
     'license-name' => 'GPL3'
 );
 
-class SpecialLabNotebook2 extends SpecialPage {
+class NewNotebook extends SpecialPage {
     function __construct() {
-        parent::__construct( 'LabNotebook2' );
+        parent::__construct( 'NewNotebook' );
     }
 
     function execute( $par ) {
@@ -22,7 +22,9 @@ class SpecialLabNotebook2 extends SpecialPage {
         $output = $this->getOutput();
         $this->setHeaders();
         $param = $request->getText( 'param' ); # Get request data from, e.g.
-        $output->addWikiText('This will (soon) implement the Lab Notebook extension.');
+        $output->addWikiText('<OneClick />');
+        $output->addHTML(file_get_contents(__DIR__.'/includes/create.html'));
+        $output->addWikiText('[[category:OWWLabNotebookV1]]');
     }
 }
 ?>
