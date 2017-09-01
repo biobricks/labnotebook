@@ -1,12 +1,13 @@
 <?php
- 
-$wgExtensionFunctions[] = "wfLNCalendar";
- 
-function wfLNCalendar() {
-    global $wgParser;
-    $wgParser->setHook("LNCalendar", "renderLNCalendar");
-}
 
+class LabNotebookCalendar {
+    public static function onParserSetup( Parser $parser ) {
+        $parser->setHook("LNCalendar","LabNotebookCalendar::renderLNCalendar");
+    }
+    public static function renderlnCalendar( $input, array $args, Parser $parser, PPFrame $frame ) {
+        return htmlspecialchars(renderLNCalendarDo($input));
+    }
+}
 
 function isLNDate($datestring) {
         if (date('Y/m/d', strtotime($datestring)) == $datestring) {
@@ -14,11 +15,6 @@ function isLNDate($datestring) {
         } else {
                 return false;
         }
-}
-
-function wfaddStyle($cssfile) {
-    global $wgOut;
-    $wgOut->addStyle($cssfile);
 }
 
 function wfaddScript($script) {
@@ -112,8 +108,10 @@ function getBasePage($page, $type){
 	return $base;
 }
 
-function renderLNCalendar($input) {
+function renderLNCalendarDo($input) {
     global $wgOut, $wgTitle, $wgParser, $wgUser;
+
+    $wgOut->addModules("ext.LabNotebook.calendar");
 
     $wgParser->disableCache();
     if (!$wgTitle){
@@ -134,8 +132,6 @@ function renderLNCalendar($input) {
     $month = trim(getLNCalendarOptions($input, "month", ""));
     $year = trim(getLNCalendarOptions($input, "year", ""));
     $type = trim(getLNCalendarOptions($input, "type", "C"));
-    $jsfile = trim(getLNCalendarOptions($input, "javascriptfile", "/mediawiki/extensions/LabNotebook/js/calendar.js"));
-    $cssfile = trim(getLNCalendarOptions($input, "cssfile", "/mediawiki/extensions/LabNotebook/css/owwnotebook.css"));
 
     wfDebug("renderLNCalendar:page = $page\n");
     $pageTitle = Title::newFromText($page);
@@ -147,11 +143,6 @@ function renderLNCalendar($input) {
 	wfDebug("renderLNCalendar:base = $base\n");
         $dates = getDateList($base, $year, $month);
 
-	wfaddStyle($cssfile);
-
-	$sc1 = renderScript1($jsfile);
-	wfaddScript($sc1);
-
 	$sc2 = renderScript2($page, $css, $id, $fmt, $dates, $readOnly, $month, $year);
         wfaddScript($sc2);
 
@@ -161,15 +152,9 @@ function renderLNCalendar($input) {
         $sc4 = renderScript4();
         wfaddScript($sc4);
 
-        $html = renderDiv($id);
-        return $html;
+        return "<div id=\"$id\" style=\"border:0px;\"></div>\n";
     }
     return '';
-}
-
-function renderScript1($jsfile){
-        $script = "<script type=\"text/javascript\" src=\"$jsfile\"></script>\n"; 
-        return $script;
 }
 
 function renderScript2($page, $css, $id, $fmt, $dates, $readOnly, $month, $year){
@@ -210,11 +195,6 @@ function renderScript3(){
 
 function renderScript4(){
         $script = "<script type=\"text/javascript\">function CalendarPageConfirmCreate(date, url){var answer = confirm(\"Create entry for \"+date+\"?\");if (answer){window.location = url;}}</script>\n";
-        return $script;
-}
-
-function renderDiv($id){
- 	$script = "<div id=\"$id\" style=\"border:0px;\"></div>\n";
         return $script;
 }
 
