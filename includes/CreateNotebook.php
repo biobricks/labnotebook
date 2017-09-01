@@ -8,8 +8,6 @@ class NewNotebookDo extends ApiBase{
         var $notebookContent = "MediaWiki:NotebookContentDefault";
         var $projectContent = "MediaWiki:ProjectContentDefault";
         var $entryContent = "MediaWiki:EntryContentDefault";
-        var $IGEMProjectContent = "MediaWiki:IGEMProjectContentDefault";
-        var $IGEMEntryContent = "MediaWiki:IGEMEntryContentDefault";
         var $notebookName = "Notebook";
         var $entryName = "Entry Base";
         var $error = '';
@@ -20,7 +18,6 @@ class NewNotebookDo extends ApiBase{
         var $type = '';
         var $username = '';
         var $who = '';
-        var $year = '';
         var $page = '';
         var $nbContent = '';
 
@@ -62,12 +59,7 @@ class NewNotebookDo extends ApiBase{
 
 	function __construct(){
 
-                global $wgIGEMCurrentYear;
 		$this->nbErrors = array(
-			'nberrornoigemteam' => 'You are attempting to create a notebook in a ' .
-                	'non-existing IGEM team page, $1.' .
-                	'Please visit <a href="/wiki/$1">'.
-			'here</a> and click "edit" to create your IGEM page.',
 			'nberrornolab' => 'There is no Lab page called $1. ' .
 			'Please visit <a href="/wiki/$1">'.
 			'here</a> and click  "edit" to create your lab page. ' .
@@ -85,25 +77,18 @@ class NewNotebookDo extends ApiBase{
                 	'Please check the fields again and try again. Thanks!',
 			'nberrornolabinreq' => 'No lab name has been specified. '.
                 	'Please check the fields again and try again. Thanks!',
-			'nberrornoinstitutioninreq' => 'No institution has been specified. '.
-                	'Please check the fields again and try again. Thanks!',
 			'nberrornotloggedin' => 'You must be logged in to create a new Lab Notebook '.
                 	'Please log in and try again. Thanks!',
-			'nberrorinvalidtype' => 'Lab Notebooks must be USER, IGEM, or LAB. '.
+			'nberrorinvalidtype' => 'Lab Notebooks must be USER or LAB. '.
                 	'Please correct this and try again. Thanks!',
 			'nberrorinvalidrequest' => 'This is not a valid request to create a Lab Notebooks. ' .
                 	'Please use a valid request to try again. Thanks!',
-			'nbsuccessigemteam' => 'Congratulations! Your IGEM Team ' .
-                	'Notebook has been created with success. ' .
-                	'You can visit it <a href="/wiki/$1">here</a>',
 			'nbsuccesslab' => 'Congratulations! Your lab notebook ' .
                 	'has been created with success. ' .
                 	'You can visit it <a href="/wiki/$1">here</a>',
 			'nbsuccesspersonal' => 'Congratulations! Your lab notebook ' .
                 	'has been created with success. ' .
                 	'You can visit it <a href="/wiki/$1">here</a>');
-
-		$this->year = $wgIGEMCurrentYear;
 	}
 
         function getStrsBetween($s,$s1,$s2) {
@@ -200,13 +185,8 @@ class NewNotebookDo extends ApiBase{
 		$type = $this->getStrsBetween($output, "type=", "]]");
 		$user = '';
 		$lab = '';
-		$team = '';
 
-		if ($type == 'IGEM'){
-			$team = $this->getStrsBetween($output, "base=", "/");
-		        $team = str_replace("IGEM:", "", $team);
-		        $page = "IGEM:$team/2009/Notebook/$project";
-		}else if ($type == 'USER'){
+		if ($type == 'USER'){
 		        $user = $this->getStrsBetween($output, "base=", "/");
 		        $page = "$user/Notebook/$project";
 		}else if ($type == 'LAB'){
@@ -222,7 +202,6 @@ class NewNotebookDo extends ApiBase{
 		$data = array();
 		$data['number'] = substr("    ",0,4-strlen($cnt)).$cnt;
 		$data['type'] = $type;
-		$data['year'] = ($type == 'IGEM') ? '2009' : '';
 		$data['pages'] = substr("    ",0,4-strlen($pages)).$pages;
 		$data['time_created'] =  $created;
 
@@ -238,8 +217,6 @@ class NewNotebookDo extends ApiBase{
 				"</a>" : $user;
 		$data['lab'] = ($exists && !empty($lab)) ? 
 			"<a href=\"/wiki/".str_replace(" ", "_", $lab)."\">$lab</a>" : $lab;
-		$data['team'] = ($exists && !empty($team)) ? 
-			"<a href=\"/wiki/IGEM:".str_replace(" ", "_", $team)."/2009\">$team</a>" : $team;
                 $data['project'] = ($exists) ?
                                 "<a href=\"$url\">".$project."</a>" : $project;
 
@@ -302,25 +279,6 @@ class NewNotebookDo extends ApiBase{
 			$this->page = $this->base.'Notebook'.'/'.$this->project;
 			break;
 
-		   case 'IGEM':
-                        if (!$this->who){
-				$this->error = str_replace('$1', $this->who, 
-					$this->nbErrors['nberrornoinstitutioninreq']);
-                $this->getResult()->addValue( null, 'newnotebook', 'no institution, we are redirecting you' );
-                                return $cn->redirect();
-                        }
-			// add the prefix and the current IGEM year
-			$team = "IGEM:$this->who/$this->year";
-			$teamPage = Title::newFromText($team);
-			if (is_object(!$teamPage) && !$teamPage->exists()){
-				$aTeamPage = WikiPage::factory($teamPage);
-                                $aTeamPage->doEditContent("Welcome to OpenWetWare, " . $this->who . ". Please customize your IGEM page",
-                                        "Autocreated IGEM Team page. name=$team.", EDIT_NEW);
-			}
-			$this->base = $team.'/';
-			$this->page = $this->base.'Notebook'.'/'.$this->project;
-			break;
-
 		    case 'USER':
 			// see if the user already has 
 			// a personal notebook
@@ -369,10 +327,6 @@ class NewNotebookDo extends ApiBase{
                                 $this->message = str_replace('$1', $this->page,
 					$this->nbErrors['nbsuccesspersonal']);
                                 break;
-                        case "IGEM":
-                                $this->message = str_replace('$1', $this->page, 
-					$this->nbErrors['nbsuccessigemteam']);
-                                break;
                         case "LAB":
                                 $this->message = str_replace('$1', $this->page, 
 					$this->nbErrors['nbsuccesslab']);
@@ -398,12 +352,7 @@ class NewNotebookDo extends ApiBase{
 
 		// see if the project page exists
 		$p = $nb.'/'.$this->project;
-		if ($this->type == "IGEM"){
-			$projectContent = $this->IGEMProjectContent;
-		}else{
-			$projectContent = $this->projectContent;
-		}
-		//$projectContent = $this->setProjectText($projectContent, $this->project); 
+		$projectContent = $this->projectContent;
                 $projectTitle = Title::newFromText($p);
 		wfDebug("ProjectContent: $projectContent.");
                 if (!$projectTitle->exists()){
@@ -417,12 +366,7 @@ class NewNotebookDo extends ApiBase{
 
 		// see if the entry content page exists
 		$e = $p.'/'.$this->entryName;
-                if ($this->type == "IGEM"){
-                        $entryContent = $this->IGEMEntryContent;
-                }else{
-                        $entryContent = $this->entryContent;
-                }
-		//$entryContent = $this->setProjectText($entryContent, $this->project);
+                $entryContent = $this->entryContent;
 		$entryBaseTitle = Title::newFromText($e);
                 if (!$entryBaseTitle->exists()){
 			// save the page. 
@@ -437,7 +381,6 @@ class NewNotebookDo extends ApiBase{
 		$ln = new LabNotebook();
 		$ln->setType($this->type);
 		$ln->setProject($this->project);
-		$ln->setInstitution($this->who);
 		$ln->setLab($this->who);
 		$ln->setPageName($projectPage);
 		$ln->setBasePageName($basePage);

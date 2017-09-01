@@ -35,12 +35,6 @@ function EntryCheck(){
  var opt = document.forms.OneClick.type.selectedIndex;
  var type = document.forms.OneClick.type.options[opt];
  switch (type.value){
-  case 'IGEM':
-    if (!document.forms.OneClick.Institution.value){
-      alert('Institution must be specified');
-      return false;
-    }
-    break;
   case 'USER':
     break;
   default:
@@ -54,12 +48,9 @@ function EntryCheck(){
  return true;
 }
 function MakePageName(){
-  var igem = 'IGEM';
   var user = 'User';
   var notebook = 'Notebook';
-  var igemYear = '2009';
   var project = document.forms.OneClick.Project.value;
-  var inst = document.forms.OneClick.Institution.value;
   var lab = document.forms.OneClick.Lab.value;
   if (project){
     project = project.capitalize();
@@ -69,19 +60,9 @@ function MakePageName(){
   var type = document.forms.OneClick.type.options[opt];
   var url = '';
   switch (type.value){
-    case 'IGEM':
-      changeDisplayById('LabRow','off');
-      changeDisplayById('ProjectRow','on');
-      changeDisplayById('InstitutionRow','on');
-      if (inst.length == 0 || project.length == 0)
-        url= '';
-      else
-        url = igem+':'+inst+'/'+igemYear+'/'+notebook+'/'+project;
-      break;
     case 'USER':
       changeDisplayById('LabRow','off');
       changeDisplayById('ProjectRow','on');
-      changeDisplayById('InstitutionRow','off');
       if (project.length == 0)
         url= '';
       else
@@ -90,7 +71,6 @@ function MakePageName(){
     case 'LAB':
       changeDisplayById('LabRow','on');
       changeDisplayById('ProjectRow','on');
-      changeDisplayById('InstitutionRow','off');
       if (lab.length == 0 || project.length == 0)
         url= '';
       else

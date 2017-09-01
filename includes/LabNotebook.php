@@ -8,7 +8,6 @@ class LabNotebook {
 	var $mBaseNamespace = '';
 	var $mType = '';
 	var $mLab = '';
-	var $mInstitution = '';
 	var $mProject = '';
 	var $mUser = '';
 	var $mUser_text = '';
@@ -41,11 +40,6 @@ class LabNotebook {
         function setProject($project){
                 // set the message
                 $this->mProject = $project;
-        }
-
-        function setInstitution($inst){
-                // set the message
-                $this->mInstitution = $inst;
         }
 
 	function setPageTitle($title){
@@ -108,7 +102,7 @@ class LabNotebook {
 					$dbw->addquotes($this->mType).", " .
 					$dbw->addquotes($this->mProject).", " .
 					$dbw->addquotes($this->mLab).", " .
-					$dbw->addquotes($this->mInstitution).", " .
+					$dbw->addquotes('').", " .
 					$dbw->addquotes($this->mUser).", " .
 					$dbw->addquotes($this->mUser_text).", " .
 					$dbw->addquotes($this->mTimestamp).")";
