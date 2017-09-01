@@ -17,7 +17,7 @@ class NewNotebookDo extends ApiBase{
         var $base = '';
         var $type = '';
         var $username = '';
-        var $who = '';
+        var $lab = '';
         var $page = '';
         var $nbContent = '';
 
@@ -25,7 +25,7 @@ class NewNotebookDo extends ApiBase{
         return array(
             'type' => 'USER',
             'project' => 'a project',
-            'who' => 'a uni, lab or user',
+            'Lab' => 'a uni, lab or user',
         );
     }
 
@@ -215,7 +215,7 @@ class NewNotebookDo extends ApiBase{
 			"<a href=\"/wiki/".str_replace(" ", "_", $user)."\">".
 				substr($user, (strpos($user, 'User:'))+ strlen('User:')).
 				"</a>" : $user;
-		$data['lab'] = ($exists && !empty($lab)) ? 
+		$data['Lab'] = ($exists && !empty($lab)) ? 
 			"<a href=\"/wiki/".str_replace(" ", "_", $lab)."\">$lab</a>" : $lab;
                 $data['project'] = ($exists) ?
                                 "<a href=\"$url\">".$project."</a>" : $project;
@@ -250,7 +250,7 @@ class NewNotebookDo extends ApiBase{
         $params = $this->extractRequestParams();
         $this->type = $params['type'];
         $this->project = str_replace("'", '', $params['project']);
-        $this->who = str_replace("'", '', $params ['who']);
+        $this->lab = str_replace("'", '', $params ['Lab']);
 
 		// is user logged in?
 		if (!$wgUser->isLoggedIn()){
@@ -262,20 +262,20 @@ class NewNotebookDo extends ApiBase{
 
 		switch($this->type){
 		    case 'LAB':
-			if (!$this->who){
+			if (!$this->lab){
                                 $this->error = $this->nbErrors["nberrornolabinreq"];
                                 $this->getResult()->addValue( null, 'newnotebook', 'no lab, we are redirecting you' );
                                 return $cn->redirect();
                         }
                         // Add the prefix and the current IGEM year
-                        $labPage = Title::newFromText($this->who);
+                        $labPage = Title::newFromText($this->lab);
                         if (!$labPage || !$labPage->exists()){
-				$this->error = str_replace('$1', $this->who, 
+				$this->error = str_replace('$1', $this->lab, 
 					$this->nbErrors['nberrornolab']);
                 $this->getResult()->addValue( null, 'newnotebook', 'no lab, we are redirecting you' );
                                 return $this->redirect();
                         }
-                        $this->base = $this->who.":";
+                        $this->base = $this->lab.":";
 			$this->page = $this->base.'Notebook'.'/'.$this->project;
 			break;
 
@@ -381,7 +381,7 @@ class NewNotebookDo extends ApiBase{
 		$ln = new LabNotebook();
 		$ln->setType($this->type);
 		$ln->setProject($this->project);
-		$ln->setLab($this->who);
+		$ln->setLab($this->lab);
 		$ln->setPageName($projectPage);
 		$ln->setBasePageName($basePage);
 		$ln->save();
