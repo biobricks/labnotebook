@@ -23,9 +23,21 @@ class NewNotebookDo extends ApiBase{
 
     public function getAllowedParams() {
         return array(
-            'nbtype' => 'USER',
-            'project' => 'a project',
-            'Lab' => 'a uni, lab or user',
+            'nbtype' => array(
+                ApiBase::PARAM_TYPE => 'string',
+                ApiBase::PARAM_REQUIRED => true,
+                ApiBase::PARAM_DFLT => 'User',
+            ),
+            'Project' => array(
+                ApiBase::PARAM_TYPE => 'string',
+                ApiBase::PARAM_REQUIRED => true,
+                ApiBase::PARAM_DFLT => 'a project',
+            ),
+            'Lab' => array(
+                ApiBase::PARAM_TYPE => 'string',
+                ApiBase::PARAM_REQUIRED => false,
+                ApiBase::PARAM_DFLT => 'a lab or user',
+            ),
         );
     }
 
