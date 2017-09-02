@@ -229,7 +229,7 @@ class NewNotebookDo extends ApiBase{
 				"</a>" : $user;
 		$data['Lab'] = ($exists && !empty($lab)) ? 
 			"<a href=\"/wiki/".str_replace(" ", "_", $lab)."\">$lab</a>" : $lab;
-                $data['project'] = ($exists) ?
+                $data['Project'] = ($exists) ?
                                 "<a href=\"$url\">".$project."</a>" : $project;
 
 		return $data;
@@ -261,7 +261,7 @@ class NewNotebookDo extends ApiBase{
 
         $params = $this->extractRequestParams();
         $this->nbtype = $params['nbtype'];
-        $this->project = str_replace("'", '', $params['project']);
+        $this->project = str_replace("'", '', $params['Project']);
         $this->lab = str_replace("'", '', $params ['Lab']);
 
 		// is user logged in?
