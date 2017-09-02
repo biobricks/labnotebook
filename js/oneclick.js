@@ -32,9 +32,9 @@ function EntryCheck(){
   alert('Project must be specified');
   return false;
  }
- var opt = document.forms.OneClick.type.selectedIndex;
- var type = document.forms.OneClick.type.options[opt];
- switch (type.value){
+ var opt = document.forms.OneClick.nbtype.selectedIndex;
+ var nbtype = document.forms.OneClick.nbtype.options[opt];
+ switch (nbtype.value){
   case 'USER':
     break;
   default:
@@ -56,10 +56,10 @@ function MakePageName(){
     project = project.capitalize();
   }
     document.forms.OneClick.Username.value = mw.config.get('wgUserName');
-  var opt = document.forms.OneClick.type.selectedIndex;
-  var type = document.forms.OneClick.type.options[opt];
+  var opt = document.forms.OneClick.nbtype.selectedIndex;
+  var nbtype = document.forms.OneClick.nbtype.options[opt];
   var url = '';
-  switch (type.value){
+  switch (nbtype.value){
     case 'USER':
       changeDisplayById('LabRow','off');
       changeDisplayById('ProjectRow','on');

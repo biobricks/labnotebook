@@ -15,7 +15,7 @@ class NewNotebookDo extends ApiBase{
         var $testMode = false;
         var $project = '';
         var $base = '';
-        var $type = '';
+        var $nbtype = '';
         var $username = '';
         var $lab = '';
         var $page = '';
@@ -23,7 +23,7 @@ class NewNotebookDo extends ApiBase{
 
     public function getAllowedParams() {
         return array(
-            'type' => 'USER',
+            'nbtype' => 'USER',
             'project' => 'a project',
             'Lab' => 'a uni, lab or user',
         );
@@ -182,14 +182,14 @@ class NewNotebookDo extends ApiBase{
 		$OWWUser = $this->getStrsBetween($output, "[", "]");
 		$created = $this->cvtDate($output);
 		$project = $this->getStrsBetween($output, "project=", ",");
-		$type = $this->getStrsBetween($output, "type=", "]]");
+		$nbtype = $this->getStrsBetween($output, "nbtype=", "]]");
 		$user = '';
 		$lab = '';
 
-		if ($type == 'USER'){
+		if ($nbtype == 'USER'){
 		        $user = $this->getStrsBetween($output, "base=", "/");
 		        $page = "$user/Notebook/$project";
-		}else if ($type == 'LAB'){
+		}else if ($nbtype == 'LAB'){
 			$lab = $this->getStrsBetween($output, "base=", ":");
 		        $page = "$lab:Notebook/$project";
 		}
@@ -201,7 +201,7 @@ class NewNotebookDo extends ApiBase{
 
 		$data = array();
 		$data['number'] = substr("    ",0,4-strlen($cnt)).$cnt;
-		$data['type'] = $type;
+		$data['nbtype'] = $nbtype;
 		$data['pages'] = substr("    ",0,4-strlen($pages)).$pages;
 		$data['time_created'] =  $created;
 
@@ -248,7 +248,7 @@ class NewNotebookDo extends ApiBase{
 		global $wgUser;
 
         $params = $this->extractRequestParams();
-        $this->type = $params['type'];
+        $this->nbtype = $params['nbtype'];
         $this->project = str_replace("'", '', $params['project']);
         $this->lab = str_replace("'", '', $params ['Lab']);
 
@@ -260,7 +260,7 @@ class NewNotebookDo extends ApiBase{
 			return $this->redirect();
 		}
 
-		switch($this->type){
+		switch($this->nbtype){
 		    case 'LAB':
 			if (!$this->lab){
                                 $this->error = $this->nbErrors["nberrornolabinreq"];
@@ -294,7 +294,7 @@ class NewNotebookDo extends ApiBase{
 			break;
 
 		    default:
-			$this->error = str_replace('$1', $this->type, 
+			$this->error = str_replace('$1', $this->nbtype,
 				$this->nbErrors['nberrorinvalidtype']);
 			$this->error = "Invalid type specified";
             $this->getResult()->addValue( null, 'newnotebook', 'error or invalid type, we are redirecting you' );
@@ -322,7 +322,7 @@ class NewNotebookDo extends ApiBase{
 		if ($this->error){
 			$this->message = "$this->error,Error=1";
 		}else{	
-		    switch ($this->type){
+		    switch ($this->nbtype){
                         case "USER":
                                 $this->message = str_replace('$1', $this->page,
 					$this->nbErrors['nbsuccesspersonal']);
@@ -340,7 +340,7 @@ class NewNotebookDo extends ApiBase{
 		wfDebug("createContent: " .
 			"base=$this->base, " .
 			"project=$this->project, " .
-			"type=$this->type");
+			"nbtype=$this->nbtype");
 		
 		// create the notebook page
 		$nb = $this->base.$this->notebookName;
@@ -379,7 +379,7 @@ class NewNotebookDo extends ApiBase{
 
 	function saveDetails($basePage, $projectPage){
 		$ln = new LabNotebook();
-		$ln->setType($this->type);
+		$ln->setType($this->nbtype);
 		$ln->setProject($this->project);
 		$ln->setLab($this->lab);
 		$ln->setPageName($projectPage);
