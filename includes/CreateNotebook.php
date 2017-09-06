@@ -71,6 +71,8 @@ class NewNotebookDo extends ApiBase{
 
 	function __construct(){
 
+        parent::__construct();
+
 		$this->nbErrors = array(
 			'nberrornolab' => 'There is no Lab page called $1. ' .
 			'Please visit <a href="/wiki/$1">'.
