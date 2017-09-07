@@ -1,10 +1,8 @@
 <?php
 
 class NewNotebookDo extends ApiBase{
-
 	var $oneClickPage = '/wiki/Special:NewNotebook';
 	var $categoryTag = '[[category:OWWLabNotebookV1]]';
-	var $nbErrors = array();
         var $notebookContent = "MediaWiki:NotebookContentDefault";
         var $projectContent = "MediaWiki:ProjectContentDefault";
         var $entryContent = "MediaWiki:EntryContentDefault";
@@ -20,6 +18,19 @@ class NewNotebookDo extends ApiBase{
         var $lab = '';
         var $page = '';
         var $nbContent = '';
+    var $nbErrors = array(
+        'nberrornolab'          => 'There is no Lab page called $1. Please visit <a href="/wiki/$1">here</a> and click  "edit" to create your lab page. Further instructions on setting up a lab page can be found here.',
+        'nberrornouserpage'     => 'There is no user page for $1. Please create your user page <a href="/wiki/$1">here</a>and click "edit" to create your user page. Further instructions on setting up a lab page can be found here.',
+        'nberrorpageexists'     => 'The project you are attempting to create already exists. Please check the fields again and try again. Thanks!',
+        'nberrorprojectexists'  => 'The project you are attempting to create already exists. Please check the fields again and try again. Thanks!',
+        'nberrornoprojectinreq' => 'No project name has been specified. Please check the fields again and try again. Thanks!',
+        'nberrornolabinreq'     => 'No lab name has been specified. Please check the fields again and try again. Thanks!',
+        'nberrornotloggedin'    => 'You must be logged in to create a new Lab Notebook. Please log in and try again. Thanks!',
+        'nberrorinvalidtype'    => 'Lab Notebooks must be USER or LAB. Please correct this and try again. Thanks!',
+        'nberrorinvalidrequest' => 'This is not a valid request to create a Lab Notebooks. Please use a valid request to try again. Thanks!',
+        'nbsuccesslab'          => 'Congratulations! Your lab notebook has been created with success. You can visit it <a href="/wiki/$1">here</a>',
+        'nbsuccesspersonal'     => 'Congratulations! Your lab notebook has been created with success. You can visit it <a href="/wiki/$1">here</a>',
+    );
 
     public function getAllowedParams() {
         return array(
@@ -67,42 +78,6 @@ class NewNotebookDo extends ApiBase{
 
 		$wgOut->addHtml($script);
 		return true;
-	}
-
-	function __construct(){
-
-        parent::__construct();
-
-		$this->nbErrors = array(
-			'nberrornolab' => 'There is no Lab page called $1. ' .
-			'Please visit <a href="/wiki/$1">'.
-			'here</a> and click  "edit" to create your lab page. ' .
-                	'Further instructions on setting up a lab page can be found here.',
-			'nberrornouserpage' => 'There is no user page for $1. '.
-			'Please create your user page '.
-			'<a href="/wiki/$1">here</a>'.
-                	'and click "edit" to create your user page. ' .
-                	'Further instructions on setting up a lab page can be found here.',
-			'nberrorpageexists' => 'The project you are attempting to create already exists.' .
-                	'Please check the fields again and try again. Thanks!',
-			'nberrorprojectexists' => 'The project you are attempting to create already exists.' .
-                	'Please check the fields again and try again. Thanks!',
-			'nberrornoprojectinreq' => 'No project name has been specified. '.
-                	'Please check the fields again and try again. Thanks!',
-			'nberrornolabinreq' => 'No lab name has been specified. '.
-                	'Please check the fields again and try again. Thanks!',
-			'nberrornotloggedin' => 'You must be logged in to create a new Lab Notebook '.
-                	'Please log in and try again. Thanks!',
-			'nberrorinvalidtype' => 'Lab Notebooks must be USER or LAB. '.
-                	'Please correct this and try again. Thanks!',
-			'nberrorinvalidrequest' => 'This is not a valid request to create a Lab Notebooks. ' .
-                	'Please use a valid request to try again. Thanks!',
-			'nbsuccesslab' => 'Congratulations! Your lab notebook ' .
-                	'has been created with success. ' .
-                	'You can visit it <a href="/wiki/$1">here</a>',
-			'nbsuccesspersonal' => 'Congratulations! Your lab notebook ' .
-                	'has been created with success. ' .
-                	'You can visit it <a href="/wiki/$1">here</a>');
 	}
 
         function getStrsBetween($s,$s1,$s2) {
