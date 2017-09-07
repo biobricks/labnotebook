@@ -11,6 +11,7 @@
         "LabNotebookFunctions": "includes/LabNotebookVariables.php",
         "LabNotebookCalendar": "includes/LNCalendar.php",
         "NewNotebookDo": "includes/CreateNotebook.php",
+        "npusdo": "includes/npus.php",
         "LabNotebook": "includes/LabNotebook.php"
     },
     "SpecialPages": {
@@ -52,7 +53,8 @@
         "remoteExtPath": "LabNotebook"
     },
     "APIModules": {
-        "newnotebook": "NewNotebookDo"
+        "newnotebook": "NewNotebookDo",
+        "npus": "npusdo"
     },
     "manifest_version": 1
 }
