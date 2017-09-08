@@ -1156,6 +1156,7 @@ function CP_addDisabledDates(start, end) {
 // Set the color of  individual dates to show they're in use but still not disabled
 // Builds an internal logical test which is run via eval() for efficiency
 function CP_addFilledDates(start, end) {
+    if (!start) return
         if (arguments.length==1) { end=start; }
         if (start==null && end==null) { return; }
         if (this.filledDatesExpression!="") { this.filledDatesExpression+= "||"; }

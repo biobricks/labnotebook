@@ -115,4 +115,7 @@ SPAN.OWWNBcpTodayTextFilled{
 .OWWNBcpBorder{
 	border: 0px;
 }
-
+table.OWWNBcpBorder{
+	 color: black;
+    background-color: white;
+}

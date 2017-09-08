@@ -41,7 +41,8 @@
         },
         "ext.LabNotebook.calendar": {
             "scripts": [
-                "js/calendar.js"
+                "js/calendar.js",
+                "js/calendar-load.js"
             ],
             "styles": [
                 "css/owwnotebook.css"

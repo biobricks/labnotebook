@@ -121,9 +121,6 @@ function renderLNCalendarDo($input) {
 	$wgTitle->getNsText().':'.$wgTitle->getText() : 
 	$wgTitle->getText();
 
-    // If the user isn't logged in, don't link to empty pages
-    $readOnly = $wgUser->isLoggedIn() ? 'N' : 'Y';
-
     wfDebug("renderLNCalendar:page = $currentPage\n");
     $page = trim(getLNCalendarOptions($input, "page", $currentPage));
     $css = trim(getLNCalendarOptions($input, "cssprefix", "OWWNB"));
@@ -141,61 +138,20 @@ function renderLNCalendarDo($input) {
             $page = $base;
         }
 	wfDebug("renderLNCalendar:base = $base\n");
-        $dates = getDateList($base, $year, $month);
 
-	$sc2 = renderScript2($page, $css, $id, $fmt, $dates, $readOnly, $month, $year);
-        wfaddScript($sc2);
-
-	$sc3 = renderScript3();
-        wfaddScript($sc3);
-
-        $sc4 = renderScript4();
-        wfaddScript($sc4);
-
-        return "<div id=\"$id\" style=\"border:0px;\"></div>\n";
-    }
-    return '';
-}
-
-function renderScript2($page, $css, $id, $fmt, $dates, $readOnly, $month, $year){
-	if ($dates != ''){
-        	$dtext = implode(",", $dates);
-	}
-        $script = "<script type=\"text/javascript\">\n" .
-		"function lnCalendar(){\n" .
-                "  var cal$id = new CalendarPopup('$id');\n" .
-                "  var wikiPage = '" . str_replace("'", "\\'", $page) . "';\n" .
-                "  var redirPage = '/wiki/Special:Redir/'+wikiPage;\n";
-	$script .= "  var fullDates = new Array($dtext);\n";
-
-	$script .= "  cal$id.setDateFormat('$fmt');\n" .
-                "  cal$id.setCssPrefix('$css');\n";
-	if ($month){
-		$script .= "  cal$id.setSingleMonth('$month');\n";
-	}
-        if ($year){
-                $script .= "  cal$id.setYear('$year');\n";
+            return '<!-- sibboleth -->'
+                .'<div id="'.$id.'" style="border:0px;">'
+                .'<div style="display:none;" id="id">'.$id.'</div>'
+                .'<div style="display:none;" id="dtext">'.implode(",",getDateList($base, $year, $month)).'</div>'
+                .'<div style="display:none;" id="page">'.str_replace("'", "\\'", $page).'</div>'
+                .'<div style="display:none;" id="fmt">'.$fmt.'</div>'
+                .'<div style="display:none;" id="css">'.$css.'</div>'
+                .'<div style="display:none;" id="month">'.$month.'</div>'
+                .'<div style="display:none;" id="year">'.$year.'</div>'
+                .'<div style="display:none;" id="readonly">'.($wgUser->isLoggedIn() ? 'N' : 'Y').'</div>'
+                .'</div>';
         }
-	$script .= "  cal$id.setReadOnly('$readOnly');\n" .
-                "  cal$id.setTodayText('');\n" .
-                "  cal$id.setUrlPrefix(redirPage);\n";
-	if ($dtext != ''){
-		$script .= "  for(i = 0; i < fullDates.length; i++)cal$id.addFilledDates(fullDates[i]);\n";
-	}
-        $script .=        "  cal$id.showCalendar('$id');\n" .
-			"}\n" .
-		"</script>\n";
-        return $script;
-}
-
-function renderScript3(){
-	$script = "<script type=\"text/javascript\">addOnloadHook( lnCalendar )</script>\n";
-        return $script;
-}
-
-function renderScript4(){
-        $script = "<script type=\"text/javascript\">function CalendarPageConfirmCreate(date, url){var answer = confirm(\"Create entry for \"+date+\"?\");if (answer){window.location = url;}}</script>\n";
-        return $script;
+    return '';
 }
 
 ?>
