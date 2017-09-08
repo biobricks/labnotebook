@@ -82,7 +82,7 @@ function getDateList($base, $year, $month){
                 		$d = isset($dlist[2]) ? $dlist[2] : '';
                 		if ($y && $m && $d){
 					wfDebug("getDateList:1:$m/$d/$y\n");
-                        		$dates[] = "'$m/$d/$y'";
+                    $dates[] = "$m/$d/$y";
 				}
 			}
         	}
