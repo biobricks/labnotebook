@@ -12,9 +12,11 @@
         "LabNotebookCalendar": "includes/LNCalendar.php",
         "NewNotebookDo": "includes/CreateNotebook.php",
         "npusdo": "includes/npus.php",
+        "Redir": "SpecialRedir/SpecialRedir.php",
         "LabNotebook": "includes/LabNotebook.php"
     },
     "SpecialPages": {
+        "Redir": "Redir",
         "NewNotebook": "NewNotebook"
     },
     "MessagesDirs": {

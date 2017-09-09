@@ -1,24 +1,13 @@
 <?php
 
-if (!defined('MEDIAWIKI')) {
-        echo <<<EOT
-To install SpecialRedir as a special page, put the following line in LocalSettings.php:
-require_once( "$IP/extensions/SpecialRedir.php" );
-EOT;
-        exit( 1 );
-}
+if (!defined('MEDIAWIKI')) exit;
 
-require_once ('GlobalFunctions.php');
-
-$wgSpecialPages['Redir'] = 'Redir';
-$wgAutoloadClasses['Redir'] = dirname(__FILE__) . '/SpecialRedir.php';
 wfDebug("SpecialRedir: loaded class and init complete\n");
 
 class Redir extends SpecialPage{
 
-    function Redir() {
-        wfDebug("SpecialRedir::SpecialRedir: class called\n");
-        SpecialPage::SpecialPage("Redir");
+    function __construct() {
+        parent::__construct( 'Redir' );
     }
 
     function addMonth($base, $date){
