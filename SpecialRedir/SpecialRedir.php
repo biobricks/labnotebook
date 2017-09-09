@@ -23,24 +23,24 @@ class Redir extends SpecialPage{
             $bt = Title::newFromText("$base/Monthly_Base");
             if ($bt->exists()){
                 // Yes. Use Notebook's default!
-                $ba = new Article($bt);
+                $ba = WikiPage::factory($bt);
                 $text = $ba->getContent();
             }else{
                 // No. Use system default
                 $bt = Title::newFromText("MediaWiki:Monthly_Base");
                 if ($bt->exists()){
-                    $ba = new Article($bt);
+                    $ba = WikiPage::factory($bt);
                     $text = $ba->getContent();
                 }
             }
             $m = substr($date, 5, 2);
             $y = substr($date, 0, 4);
-            $text = str_replace ("#last_month", $m - 1, $text);
-            $text = str_replace ("#this_month", $m, $text);
-            $text = str_replace ("#next_month", $m + 1, $text);
-            $text = str_replace ("#year", $y, $text);
-            $a = new Article($t);
-            $a->doEdit($text, "Autocreate Month $month Entry for $base", EDIT_NEW);
+            $text->mText = str_replace ("#last_month", $m - 1, $text->mText);
+            $text->mText = str_replace ("#this_month", $m, $text->mText);
+            $text->mText = str_replace ("#next_month", $m + 1, $text->mText);
+            $text->mText = str_replace ("#year", $y, $text->mText);
+            $a = WikiPage::factory($t);
+            $a->doEditContent($text, "Autocreate Month $month Entry for $base", EDIT_NEW);
             $this->addYear($base, $date);
        }
        return $t;
@@ -59,20 +59,20 @@ class Redir extends SpecialPage{
             $bt = Title::newFromText("$base/Yearly_Base");
             if ($bt->exists()){
                 // Yes. Use Notebook's default!
-                $ba = new Article($bt);
+                $ba = WikiPage::factory($bt);
                 $text = $ba->getContent();
             }else{
                 // No. Use system default
                 $bt = Title::newFromText("MediaWiki:Yearly_Base");
                 if ($bt->exists()){
-                    $ba = new Article($bt);
+                    $ba = WikiPage::factory($bt);
                     $text = $ba->getContent();
                 }
             }
-            $text = str_replace ("#year", $year, $text);
+            $text->mText = str_replace ("#year", $year, $text->mText);
 
-            $a = new Article($t);
-            $a->doEdit($text, "Autocreate Year $year Entry for $base", EDIT_NEW);
+            $a = WikiPage::factory($t);
+            $a->doEditContent($text, "Autocreate Year $year Entry for $base", EDIT_NEW);
        }
        return $t;
     }
@@ -89,18 +89,18 @@ class Redir extends SpecialPage{
             $bt = Title::newFromText("$base/Entry_Base");
             if ($bt->exists()){
                 // Yes. Use Notebook's default!
-                $ba = new Article($bt);
+                $ba = WikiPage::factory($bt);
                 $text = $ba->getContent();
             }else{
                 // No. Use system default
                 $bt = Title::newFromText("MediaWiki:EntryContentDefault");
                 if ($bt->exists()){
-                    $ba = new Article($bt);
+                    $ba = WikiPage::factory($bt);
                     $text = $ba->getContent();
                 }
             }
-            $a = new Article($t);
-            $a->doEdit($text, "Autocreate $date Entry for $base", EDIT_NEW);
+            $a = WikiPage::factory($t);
+            $a->doEditContent($text, "Autocreate $date Entry for $base", EDIT_NEW);
             $this->addMonth($base, $date);
        }
        return $t;

@@ -1,7 +1,5 @@
 <?php
  
-$wgHooks['EditPage::showEditForm:initial'][] = array('wfLabNotebookPrepend');
-
 function lnGetUser ($titleText){
     if (($pos = strpos($titleText, ':'))!= false){
         $titleText = substr($titleText, $pos + 1);
