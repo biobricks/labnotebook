@@ -13,6 +13,7 @@
         "NewNotebookDo": "includes/CreateNotebook.php",
         "npusdo": "includes/npus.php",
         "Redir": "SpecialRedir/SpecialRedir.php",
+        "LNPrepend": "includes/LabNotebookPrepend.php",
         "LabNotebook": "includes/LabNotebook.php"
     },
     "SpecialPages": {
@@ -26,7 +27,7 @@
     },
     "Hooks": {
         "EditPage::showEditForm:initial": [
-            "wfLabNotebookPrepend"
+            "LNPrepend::wfLabNotebookPrepend"
         ],
         "ParserFirstCallInit": [
             "LabNotebookCalendar::onParserSetup"

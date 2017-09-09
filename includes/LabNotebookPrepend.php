@@ -1,6 +1,8 @@
 <?php
- 
-function lnGetUser ($titleText){
+
+class LNPrepend {
+
+private function lnGetUser ($titleText){
     if (($pos = strpos($titleText, ':'))!= false){
         $titleText = substr($titleText, $pos + 1);
     }
@@ -12,7 +14,7 @@ function lnGetUser ($titleText){
     return $user;
 }
 
-function lnisValidDate ($i_sDate){
+private function lnisValidDate ($i_sDate){
     $blnValid = true;
     // check the format first (may not be necessary as we use checkdate() below)
     if(!ereg ("^[0-9]{4}/[0-9]{2}/[0-9]{2}$", $i_sDate)){
@@ -31,7 +33,7 @@ function lnisValidDate ($i_sDate){
     return ($blnValid);
 }
 
-function wfLabNotebookPrepend($editpage) { 
+public static function wfLabNotebookPrepend($editpage) {
     // EditFormPreloadText
     global $wgOut;
     global $wgUser;
@@ -111,6 +113,7 @@ function wfLabNotebookPrepend($editpage) {
         }
     }
     return true;
+}
 }
 
 ?>
