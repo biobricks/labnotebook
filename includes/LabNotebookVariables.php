@@ -3,7 +3,6 @@
 class LabNotebookFunctions{
     var $nsText = '';
     var $ns = '';
-    var $name = '';
     var $sysProjectBase = "MediaWiki:ProjectContentDefault";
     var $sysEntryBase = "MediaWiki:EntryContentDefault";
     var $projectBase = "Project_Base";
@@ -31,7 +30,6 @@ class LabNotebookFunctions{
         global $wgUser, $wgContLang, $wgLabNotebookNamespace;
         $this->nsText = $wgContLang->getNSText($wgLabNotebookNamespace);
         $this->ns = $wgLabNotebookNamespace;
-        $this->name = $wgUser->getName();
     }
 
     function getPage($title){
@@ -44,8 +42,8 @@ class LabNotebookFunctions{
         return ($text);
     }
 
-    function datechange($date, $days){
-	if (!$this->isdate($date)){
+    static function datechange($date, $days){
+	if (!LabNotebookFunctions::isdate($date)){
 	    return '';
 	}
 	$y = substr($date, 0,4);
@@ -70,7 +68,7 @@ class LabNotebookFunctions{
     }
 
     function getName(){
-        return $this->name;
+        return $wgUser->getName();
     }
 
     function setProject1($projectBase, $project){
@@ -163,9 +161,9 @@ class LabNotebookFunctions{
         return '';
     }
 
-    function isdate($date){
+    static function isdate($date){
         $blnValid = 1;
-        if(!ereg ("^[0-9]{4}/[0-9]{2}/[0-9]{2}$", $date)){
+        if(!preg_match('@^[0-9]{4}/[0-9]{2}/[0-9]{2}$@', $date)){
             $blnValid = 0;
         }else{
              $v = explode("/", $date);
@@ -227,7 +225,7 @@ class LabNotebookFunctions{
 	return $section;
     }
 
-    function lnfilter(&$parser, $title){
+    public static function lnfilter(&$parser, $title){
 	global $wgTitle;
 
 	$p = explode("/", $wgTitle->getText());
@@ -257,18 +255,18 @@ class LabNotebookFunctions{
 	return($this->fixSectionTags($output));
     }
 
-    function lnbase ( &$parser, $current=''){
+    public static function lnbase ( &$parser, $current=''){
 	if (strlen($current) <= 11){
 		return '';
 	}
 	return substr($current, 0, strlen($current) - 11);
     }
 
-    function lnnextentry ( &$parser, $current=''){
+    public static function lnnextentry ( &$parser, $current=''){
         if (strlen($current) <= 10){
             return '';
 	}
-	$date =  $this->lndate($parser, $current);
+	$date =  LabNotebookFunctions::lndate($parser, $current);
         if ($date == ''){
             return '';
 	}
@@ -289,11 +287,11 @@ class LabNotebookFunctions{
 	 return '';
     }
 
-    function lnpreventry ( &$parser, $current=''){
+    public static function lnpreventry ( &$parser, $current=''){
 	if (strlen($current) <= 10){
             return '';
 	}
-        $date =  $this->lndate($parser, $current);
+        $date =  LabNotebookFunctions::lndate($parser, $current);
         if ($date == ''){
             return '';
 	}
@@ -314,21 +312,21 @@ class LabNotebookFunctions{
 	 return '';
     }
 
-    function lnnewproject ( &$parser, $entryBase='', $project=''){
+    public static function lnnewproject ( &$parser, $entryBase='', $project=''){
         if ($entryBase == '' || $project == ''){
             return '';
         }
         return $this->setProject($entryBase, $project);
     }
 
-    function lnnewentry ( &$parser, $entryBase='', $date='', $redirect=""){
+    public static function lnnewentry ( &$parser, $entryBase='', $date='', $redirect=""){
         if ($entryBase == '' || $date == ''){
             return '';
         }
         return $this->setEntry($entryBase, $date, $redirect);
     }
 
-    function lnuser (&$parser, $titleText){
+    public static function lnuser (&$parser, $titleText){
         if (($pos = strpos($titleText, ':'))!= false){
             $titleText = substr($titleText, $pos + 1);
         }
@@ -340,19 +338,19 @@ class LabNotebookFunctions{
 	return $user;
     }
 
-    function lnisdate (&$parser, $date){
-	return $this->isDate($date);
+    public static function lnisdate (&$parser, $date){
+	return LabNotebookFunctions::isDate($date);
     }
 
-    function lndate (&$parser, $entryPage){
+    public static function lndate (&$parser, $entryPage){
 	$date = substr($entryPage, -10);
-        if ($this->isDate($date)){
+        if (LabNotebookFunctions::isDate($date)){
 	    return $date;
 	}
 	return '';
     }
 
-    function lnproject ( &$parser, $username='', $project='' ){
+    public static function lnproject ( &$parser, $username='', $project='' ){
         if ($username == '' || $project == ''){
             return '';
         }
@@ -360,7 +358,7 @@ class LabNotebookFunctions{
 		str_replace("_", " ", $username."/$this->projects$project");
     }
 
-    function lnnewbie( &$parser){
+    public static function lnnewbie( &$parser){
         global $wgNoCookies;
 
         if ($wgNoCookies)
@@ -368,11 +366,11 @@ class LabNotebookFunctions{
         return "N";
     }
 
-    function lnencode ( &$parser, $var){
+    public static function lnencode ( &$parser, $var){
 	return urlencode($var);
     }
 
-    function lnvar ( &$parser, $var){
+    public static function lnvar ( &$parser, $var){
 	global $wgUser;
         global $wgContLang;
         global $wgLabNotebookNamespace;
@@ -385,7 +383,7 @@ class LabNotebookFunctions{
                         break;
 
                 case "THISDATE":
-                        $p = $this->lndate($parser, $wgTitle->getText());
+                        $p = LabNotebookFunctions::lndate($parser, $wgTitle->getText());
                         break;
 
                 case "LOGGEDIN":
@@ -393,11 +391,11 @@ class LabNotebookFunctions{
                         break;
 
                 case "THISUSER":
-                        $p = $this->lnuser($parser, $wgTitle->getText());
+                        $p = LabNotebookFunctions::lnuser($parser, $wgTitle->getText());
                         break;
 
                 case "PREVDAY":
-			$date = $this->lndate($parser, $wgTitle->getText());
+			$date = LabNotebookFunctions::lndate($parser, $wgTitle->getText());
 			if ($date)
 			    $p = $this->datechange ($date, -1);
 			else
@@ -405,7 +403,7 @@ class LabNotebookFunctions{
                         break;
 
                 case "NEXTDAY":
-                        $date = $this->lndate($parser, $wgTitle->getText());
+                        $date = LabNotebookFunctions::lndate($parser, $wgTitle->getText());
                         if ($date)
                             $p = $this->datechange ($date, 1);
                         else
@@ -446,7 +444,7 @@ class LabNotebookFunctions{
                         break;
 
         	case "USERNAME":
-			$p = $this->getName();
+                $p = $wgUser->getName();
     			break;
 
                 case "LABNBNS":
