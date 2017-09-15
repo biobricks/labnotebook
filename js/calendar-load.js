@@ -56,6 +56,10 @@ function CalendarPageConfirmCreate(date, url) {
     }
 }
 
+window.htmlDecode = htmlDecode
+window.lnCalendarLoad = lnCalendarLoad
+window.CalendarPageConfirmCreate = CalendarPageConfirmCreate
+
 jQuery(document).ready(function($) {
     lnCalendarLoad()
 })
