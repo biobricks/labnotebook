@@ -21,7 +21,7 @@
         "NewNotebook": "NewNotebook"
     },
     "MessagesDirs": {
-        "MyExtension": [
+        "LabNotebook": [
             "i18n"
         ]
     },
@@ -30,10 +30,12 @@
             "LNPrepend::wfLabNotebookPrepend"
         ],
         "ParserFirstCallInit": [
+            "LabNotebookFunctions::onParserSetup",
             "LabNotebookCalendar::onParserSetup"
         ]
     },
     "ExtensionMessagesFiles": {
+        "LabNotebookMagic": "i18n/LabNotebook.i18n.magic.php",
         "LabNotebookAlias": "i18n/LabNotebook.i18n.alias.php"
     },
     "ResourceModules": {

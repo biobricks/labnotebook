@@ -1,49 +1,5 @@
 <?php
 
-$wgExtensionFunctions[] = 'wfLabNotebookFunctions';
-
-$wgHooks['LanguageGetMagic'][] = 'wfLabNotebookFunctionsLanguageGetMagic';
-
-function wfLabNotebookFunctions ( ) {
-    global $wgParser, $wgLabNotebookFunctions;
-
-    $wgLabNotebookFunctions = new LabNotebookFunctions ( );
-    
-    $wgParser->setFunctionHook ( 'lnnextentry', array ( &$wgLabNotebookFunctions, 'lnnextentry') );
-    $wgParser->setFunctionHook ( 'lnpreventry', array ( &$wgLabNotebookFunctions, 'lnpreventry') );
-    $wgParser->setFunctionHook ( 'lnnewbie', array ( &$wgLabNotebookFunctions, 'lnnewbie') );
-    $wgParser->setFunctionHook ( 'lnvar',    array ( &$wgLabNotebookFunctions, 'lnvar') );
-    $wgParser->setFunctionHook ( 'lnencode',    array ( &$wgLabNotebookFunctions, 'lnencode') );
-    $wgParser->setFunctionHook ( 'lnproject',array ( &$wgLabNotebookFunctions, 'lnproject') );
-    $wgParser->setFunctionHook ( 'lnuser',   array ( &$wgLabNotebookFunctions, 'lnuser') );
-    $wgParser->setFunctionHook ( 'lnisdate', array ( &$wgLabNotebookFunctions, 'lnisdate') );
-    $wgParser->setFunctionHook ( 'lndate', array ( &$wgLabNotebookFunctions, 'lndate') );
-    $wgParser->setFunctionHook ( 'lnnewproject', array ( &$wgLabNotebookFunctions, 'lnnewproject') );
-    $wgParser->setFunctionHook ( 'lnbase', array ( &$wgLabNotebookFunctions, 'lnbase') );
-    $wgParser->setFunctionHook ( 'lnnewentry', array ( &$wgLabNotebookFunctions, 'lnnewentry') );
-    $wgParser->setFunctionHook ( 'lnfilter', array ( &$wgLabNotebookFunctions, 'lnfilter') );
-}
-
-function wfLabNotebookFunctionsLanguageGetMagic( &$magicWords, $langCode = "en" ) {
-    switch ( $langCode ) {
-        default:
-            $magicWords['lnnextentry']    = array ( 0, 'lnnextentry' );
-            $magicWords['lnpreventry']    = array ( 0, 'lnpreventry' );
-            $magicWords['lnnewbie']       = array ( 0, 'lnnewbie' );
-            $magicWords['lnvar']          = array ( 0, 'lnvar' );
-            $magicWords['lnencode']       = array ( 0, 'lnencode' );
-	    $magicWords['lnproject']      = array ( 0, 'lnproject' );
-            $magicWords['lnuser']         = array ( 0, 'lnuser' );
-            $magicWords['lnisdate']       = array ( 0, 'lnisdate' );
-            $magicWords['lndate']         = array ( 0, 'lndate' );
-            $magicWords['lnnewentry']     = array ( 0, 'lnnewentry' );
-            $magicWords['lnbase']         = array ( 0, 'lnbase' );
-            $magicWords['lnnewproject']   = array ( 0, 'lnnewproject' );
-            $magicWords['lnfilter']       = array ( 0, 'lnfilter' );
-    }
-    return true;
-}
-
 class LabNotebookFunctions{
     var $nsText = '';
     var $ns = '';
@@ -55,8 +11,24 @@ class LabNotebookFunctions{
     var $projects = "Projects/";
     var $entries = "/";
 
-    function LabNotebookFunctions(){
-	global $wgUser, $wgContLang, $wgLabNotebookNamespace;
+    public static function onParserSetup( &$parser ) {
+        $parser->setFunctionHook ( 'lnnextentry', 'LabNotebookFunctions::lnnextentry' );
+        $parser->setFunctionHook ( 'lnpreventry', 'LabNotebookFunctions::lnpreventry' );
+        $parser->setFunctionHook ( 'lnnewbie', 'LabNotebookFunctions::lnnewbie' );
+        $parser->setFunctionHook ( 'lnvar', 'LabNotebookFunctions::lnvar' );
+        $parser->setFunctionHook ( 'lnencode', 'LabNotebookFunctions::lnencode' );
+        $parser->setFunctionHook ( 'lnproject','LabNotebookFunctions::lnproject' );
+        $parser->setFunctionHook ( 'lnuser', 'LabNotebookFunctions::lnuser' );
+        $parser->setFunctionHook ( 'lnisdate', 'LabNotebookFunctions::lnisdate' );
+        $parser->setFunctionHook ( 'lndate', 'LabNotebookFunctions::lndate' );
+        $parser->setFunctionHook ( 'lnnewproject', 'LabNotebookFunctions::lnnewproject' );
+        $parser->setFunctionHook ( 'lnbase', 'LabNotebookFunctions::lnbase' );
+        $parser->setFunctionHook ( 'lnnewentry', 'LabNotebookFunctions::lnnewentry' );
+        $parser->setFunctionHook ( 'lnfilter', 'LabNotebookFunctions::lnfilter' );
+    }
+
+    function __construct(){
+        global $wgUser, $wgContLang, $wgLabNotebookNamespace;
         $this->nsText = $wgContLang->getNSText($wgLabNotebookNamespace);
         $this->ns = $wgLabNotebookNamespace;
         $this->name = $wgUser->getName();
