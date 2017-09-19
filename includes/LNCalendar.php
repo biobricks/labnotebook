@@ -153,5 +153,3 @@ function renderLNCalendarDo($input) {
         }
     return '';
 }
-
-?>

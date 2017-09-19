@@ -217,5 +217,3 @@ class LabCalendar{
         	return $script;
 	}
 }
-
-?>

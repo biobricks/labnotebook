@@ -466,5 +466,3 @@ class LabNotebookFunctions{
 	return $p;
     }
 }
-
-?>

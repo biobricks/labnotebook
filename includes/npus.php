@@ -23,4 +23,3 @@ class npusdo extends ApiBase{
         return $this->getResult();
 	}
 }
-?>

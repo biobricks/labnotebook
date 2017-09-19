@@ -178,6 +178,3 @@ function wfRedirLoadMessages() {
         (Redir::loadMessages());
         return true;
 }
-
-
-?>

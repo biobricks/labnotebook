@@ -427,5 +427,3 @@ class NewNotebookDo extends ApiBase{
     		return '';
 	}
 }
-
-?>

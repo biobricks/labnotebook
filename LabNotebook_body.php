@@ -27,4 +27,3 @@ class NewNotebook extends SpecialPage {
         $output->addWikiText('[[category:OWWLabNotebookV1]]');
     }
 }
-?>

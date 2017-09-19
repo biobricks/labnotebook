@@ -115,5 +115,3 @@ public static function wfLabNotebookPrepend($editpage) {
     return true;
 }
 }
-
-?>
