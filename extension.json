@@ -13,6 +13,7 @@
         "NewNotebookDo": "includes/CreateNotebook.php",
         "Redir": "SpecialRedir/SpecialRedir.php",
         "LNPrepend": "includes/LabNotebookPrepend.php",
+        "doathing": "includes/doathing.php",
         "LabNotebook": "includes/LabNotebook.php"
     },
     "SpecialPages": {
@@ -58,6 +59,7 @@
         "remoteExtPath": "LabNotebook"
     },
     "APIModules": {
+        "doathing": "doathing",
         "newnotebook": "NewNotebookDo"
     },
     "manifest_version": 1
