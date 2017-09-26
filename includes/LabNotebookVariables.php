@@ -1,8 +1,6 @@
 <?php
 
 class LabNotebookFunctions{
-    var $nsText = '';
-    var $ns = '';
     var $sysProjectBase = "MediaWiki:ProjectContentDefault";
     var $sysEntryBase = "MediaWiki:EntryContentDefault";
     var $projectBase = "Project_Base";
@@ -24,12 +22,6 @@ class LabNotebookFunctions{
         $parser->setFunctionHook ( 'lnbase', 'LabNotebookFunctions::lnbase' );
         $parser->setFunctionHook ( 'lnnewentry', 'LabNotebookFunctions::lnnewentry' );
         $parser->setFunctionHook ( 'lnfilter', 'LabNotebookFunctions::lnfilter' );
-    }
-
-    function __construct(){
-        global $wgUser, $wgContLang, $wgLabNotebookNamespace;
-        $this->nsText = $wgContLang->getNSText($wgLabNotebookNamespace);
-        $this->ns = $wgLabNotebookNamespace;
     }
 
     function getPage($title){
@@ -60,11 +52,13 @@ class LabNotebookFunctions{
     }
 
     function getNSText(){
-	return $this->nsText;
+        global $wgContLang, $wgLabNotebookNamespace;
+        return $wgContLang->getNSText($wgLabNotebookNamespace);
     }
 
     function getNS(){
-        return $this->ns;
+        global $wgLabNotebookNamespace;
+        return $wgLabNotebookNamespace;
     }
 
     function getName(){
@@ -72,7 +66,7 @@ class LabNotebookFunctions{
     }
 
     function setProject1($projectBase, $project){
-        $name = $this->getNSText().":$projectBase/$this->projects$project";
+        $name = LabNotebookFunctions::getNSText().":$projectBase/$this->projects$project";
         $t = Title::newFromText($name);
         if (!$t->exists()){
             $a = new Article($t);
@@ -82,7 +76,7 @@ class LabNotebookFunctions{
     }
 
     function setProject2($username, $project){
-        $name = $this->getNSText().":$username/$this->projects$project";
+        $name = LabNotebookFunctions::getNSText().":$username/$this->projects$project";
         $t = Title::newFromText($name);
         if (!$t->exists()){
             $base = $this->getBase();
@@ -148,7 +142,7 @@ class LabNotebookFunctions{
     }
 
     function getBase($username=''){
-	$tp = Title::newFromText($this->getNSText().":$username/$projectBase");
+	$tp = Title::newFromText(LabNotebookFunctions::getNSText().":$username/$projectBase");
 	if ($tp->exists()){
             $a = new Article($tp);
             return $a->getContent();
@@ -354,7 +348,7 @@ class LabNotebookFunctions{
         if ($username == '' || $project == ''){
             return '';
         }
-        return $this->getNSText().':'.
+        return LabNotebookFunctions::getNSText().':'.
 		str_replace("_", " ", $username."/$this->projects$project");
     }
 
@@ -448,12 +442,12 @@ class LabNotebookFunctions{
     			break;
 
                 case "LABNBNS":
-                	$p = $this->getNSText();
-                        break;
+                    $p = LabNotebookFunctions::getNSText();
+                    break;
 
                case "LABNBNSNUMBER":
-                        $p = $this->getNS();
-                        break;
+                   $p = LabNotebookFunctions::getNS();
+                   break;
 
                 case "LABNBDATE":
                         $p = date('Y/m/d');
