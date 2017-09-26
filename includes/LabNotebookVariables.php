@@ -202,7 +202,7 @@ class LabNotebookFunctions{
 	$project = $p[2];
 
         $output = '<br />';
-        $text = $this->getPage($title);
+        $text = LabNotebookFunctions::getPage($title);
         $text = str_replace('{{P|', '{{p|', $text);
         $text = str_replace('{{project|', '{{p|', $text);
         $text = str_replace('{{Project|', '{{p|', $text);
@@ -214,11 +214,11 @@ class LabNotebookFunctions{
                 $rawContent = isset($entryBody[1]) ? trim($entryBody[1]) : '';
                 if ($projectName == $project){
                     list($content) = explode('}}', $rawContent);
-                    $output .= $this->addHideShow($content)."<br />";
+                    $output .= LabNotebookFunctions::addHideShow($content)."<br />";
                 }
             }
         }
-	return($this->fixSectionTags($output));
+	return(LabNotebookFunctions::fixSectionTags($output));
     }
 
     public static function lnbase ( &$parser, $current=''){
@@ -363,7 +363,7 @@ class LabNotebookFunctions{
                 case "PREVDAY":
 			$date = LabNotebookFunctions::lndate($parser, $wgTitle->getText());
 			if ($date)
-			    $p = $this->datechange ($date, -1);
+			    $p = LabNotebookFunctions::datechange ($date, -1);
 			else
 			    $p = '';
                         break;
@@ -371,7 +371,7 @@ class LabNotebookFunctions{
                 case "NEXTDAY":
                         $date = LabNotebookFunctions::lndate($parser, $wgTitle->getText());
                         if ($date)
-                            $p = $this->datechange ($date, 1);
+                            $p = LabNotebookFunctions::datechange ($date, 1);
                         else
                             $p = '';
                         break;
