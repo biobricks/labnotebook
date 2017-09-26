@@ -1,10 +1,6 @@
 <?php
 
 class LabNotebookFunctions{
-    var $sysEntryBase = "MediaWiki:EntryContentDefault";
-    var $entryBase = "Entry_Base";
-    var $entries = "/";
-
     public static function onParserSetup( &$parser ) {
         $parser->setFunctionHook ( 'lnnextentry', 'LabNotebookFunctions::lnnextentry' );
         $parser->setFunctionHook ( 'lnpreventry', 'LabNotebookFunctions::lnpreventry' );
@@ -293,7 +289,7 @@ class LabNotebookFunctions{
         if ($entryBase == '' || $date == ''){
             return '';
         }
-        return $this->setEntry($entryBase, $date, $redirect);
+        return LabNotebookFunctions::setEntry($entryBase, $date, $redirect);
     }
 
     public static function lnuser (&$parser, $titleText){
@@ -390,7 +386,7 @@ class LabNotebookFunctions{
 			break;
 
                 case "ENTRIES":
-                        $p = $this->entries;
+                        $p = "/";
                         break;
 
                 case "PROJECTS":
@@ -398,7 +394,7 @@ class LabNotebookFunctions{
                         break;
 
                 case "SYSENTRYBASE":
-                        $p = $this->sysEntryBase;
+                        $p = "MediaWiki:EntryContentDefault";
                         break;
 
                case "SYSPROJECTBASE":
@@ -406,7 +402,7 @@ class LabNotebookFunctions{
                         break;
 
                 case "ENTRYBASE":
-                        $p = $this->entryBase;
+                        $p = "Entry_Base";
                         break;
 
                 case "PROJECTBASE":
