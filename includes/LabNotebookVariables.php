@@ -17,7 +17,7 @@ class LabNotebookFunctions{
         $parser->setFunctionHook ( 'lnfilter', 'LabNotebookFunctions::lnfilter' );
     }
 
-    function getPage($title){
+    static function getPage($title){
 	$text = '';
         $t = Title::newFromText($title);
         if ($t != '' || $t->exists()){
@@ -37,28 +37,28 @@ class LabNotebookFunctions{
 	return date("Y/m/d", mktime(0, 0, 0, $m, $d, $y));	
     }
 
-    function parse(&$parser, $text){
+    static function parse(&$parser, $text){
         $localParser = new Parser();
         $parseOutput = $localParser->parse($text, $parser->mTitle,
                 $parser->mOptions, false);
         return $parseOutput->getText();
     }
 
-    function getNSText(){
+    static function getNSText(){
         global $wgContLang, $wgLabNotebookNamespace;
         return $wgContLang->getNSText($wgLabNotebookNamespace);
     }
 
-    function getNS(){
+    static function getNS(){
         global $wgLabNotebookNamespace;
         return $wgLabNotebookNamespace;
     }
 
-    function getName(){
+    static function getName(){
         return $wgUser->getName();
     }
 
-   function setProject($notebookBase, $project){
+   static function setProject($notebookBase, $project){
         $ns = "Notebook";
         $name = "$ns:$notebookBase/projects/$project";
         $t = Title::newFromText($name);
@@ -84,7 +84,7 @@ class LabNotebookFunctions{
         return $t->getText();
     }
 
-    function setEntry($notebookBase, $date, $redirect=false){
+    static function setEntry($notebookBase, $date, $redirect=false){
         global $wgOut;
 
         $ns = "Notebook";
@@ -113,7 +113,7 @@ class LabNotebookFunctions{
         $wgOut->redirect($t->getFullURL( '' ), '301');
     }
 
-    function getBase($username=''){
+    static function getBase($username=''){
 	$tp = Title::newFromText(LabNotebookFunctions::getNSText().":$username/$projectBase");
 	if ($tp->exists()){
             $a = new Article($tp);
@@ -143,7 +143,7 @@ class LabNotebookFunctions{
         return ($blnValid);
     }
 
-    function fixSectionTags($entryText){
+    static function fixSectionTags($entryText){
         $startLength = 10;
         $startSection = '==========';
         $baseSection = 3;
@@ -173,7 +173,7 @@ class LabNotebookFunctions{
         return trim($entryText);
     }
 
-    function ismyDate($date){
+    static function ismyDate($date){
         $y = substr($date, 0, 4);
         $m = substr($date, 5, 2);
         $d = substr($date, 8, 2);
@@ -183,7 +183,7 @@ class LabNotebookFunctions{
         return true;
     }
 
-    function addHideShow($section){
+    static function addHideShow($section){
 	$id = mt_rand(1, 1000000);
 	$section = "<span class=\"_toggler_hide-tog$id\">Hide</span> | " .
 			"<span class=\"_toggler_show-tog$id\">Show</span>\n" .
