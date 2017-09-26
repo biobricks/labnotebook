@@ -192,11 +192,9 @@ class LabNotebookFunctions{
     }
 
     public static function lnfilter(&$parser, $title){
-	global $wgTitle;
-
-	$p = explode("/", $wgTitle->getText());
+	$p = explode("/", $parser->getTitle());
 	if (!isset($p[2]) || $p[1] != 'Projects' ||
-			$wgTitle->getNamespace() != NS_LABNB){
+        $parser->getTitle()->getNamespace() != NS_LABNB) {
 		return '';
 	}
 	$project = $p[2];
@@ -340,7 +338,6 @@ class LabNotebookFunctions{
 	global $wgUser;
         global $wgContLang;
         global $wgLabNotebookNamespace;
-	global $wgTitle;
 	global $wgOut;
 
 	switch(strtoupper($var)){
@@ -349,7 +346,7 @@ class LabNotebookFunctions{
                         break;
 
                 case "THISDATE":
-                        $p = LabNotebookFunctions::lndate($parser, $wgTitle->getText());
+                        $p = LabNotebookFunctions::lndate($parser, $parser->getTitle());
                         break;
 
                 case "LOGGEDIN":
@@ -357,11 +354,11 @@ class LabNotebookFunctions{
                         break;
 
                 case "THISUSER":
-                        $p = LabNotebookFunctions::lnuser($parser, $wgTitle->getText());
+                        $p = LabNotebookFunctions::lnuser($parser, $parser->getTitle());
                         break;
 
                 case "PREVDAY":
-			$date = LabNotebookFunctions::lndate($parser, $wgTitle->getText());
+			$date = LabNotebookFunctions::lndate($parser, $parser->getTitle());
 			if ($date)
 			    $p = LabNotebookFunctions::datechange ($date, -1);
 			else
@@ -369,7 +366,7 @@ class LabNotebookFunctions{
                         break;
 
                 case "NEXTDAY":
-                        $date = LabNotebookFunctions::lndate($parser, $wgTitle->getText());
+                        $date = LabNotebookFunctions::lndate($parser, $parser->getTitle());
                         if ($date)
                             $p = LabNotebookFunctions::datechange ($date, 1);
                         else
