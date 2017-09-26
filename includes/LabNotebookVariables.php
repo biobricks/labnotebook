@@ -1,11 +1,8 @@
 <?php
 
 class LabNotebookFunctions{
-    var $sysProjectBase = "MediaWiki:ProjectContentDefault";
     var $sysEntryBase = "MediaWiki:EntryContentDefault";
-    var $projectBase = "Project_Base";
     var $entryBase = "Entry_Base";
-    var $projects = "Projects/";
     var $entries = "/";
 
     public static function onParserSetup( &$parser ) {
@@ -63,27 +60,6 @@ class LabNotebookFunctions{
 
     function getName(){
         return $wgUser->getName();
-    }
-
-    function setProject1($projectBase, $project){
-        $name = LabNotebookFunctions::getNSText().":$projectBase/$this->projects$project";
-        $t = Title::newFromText($name);
-        if (!$t->exists()){
-            $a = new Article($t);
-            $a->doEdit($name, '', EDIT_NEW|EDIT_AUTOSUMMARY);
-        }
-        return $t->getText();
-    }
-
-    function setProject2($username, $project){
-        $name = LabNotebookFunctions::getNSText().":$username/$this->projects$project";
-        $t = Title::newFromText($name);
-        if (!$t->exists()){
-            $base = $this->getBase();
-            $a = new Article($t);
-            $a->doEdit($base, '', EDIT_NEW|EDIT_AUTOSUMMARY);
-        }
-	return $t->getText();
     }
 
    function setProject($notebookBase, $project){
@@ -147,7 +123,7 @@ class LabNotebookFunctions{
             $a = new Article($tp);
             return $a->getContent();
 	}
-        $tg = Title::newFromText($this->sysProjectBase);
+        $tg = Title::newFromText("MediaWiki:ProjectContentDefault");
         if ($tg->exists()){
             $a = new Article($tg);
             return $a->getContent();
@@ -310,7 +286,7 @@ class LabNotebookFunctions{
         if ($entryBase == '' || $project == ''){
             return '';
         }
-        return $this->setProject($entryBase, $project);
+        return LabNotebookFunctions::setProject($entryBase, $project);
     }
 
     public static function lnnewentry ( &$parser, $entryBase='', $date='', $redirect=""){
@@ -349,7 +325,7 @@ class LabNotebookFunctions{
             return '';
         }
         return LabNotebookFunctions::getNSText().':'.
-		str_replace("_", " ", $username."/$this->projects$project");
+		str_replace("_", " ", $username."/Projects/$project");
     }
 
     public static function lnnewbie( &$parser){
@@ -418,7 +394,7 @@ class LabNotebookFunctions{
                         break;
 
                 case "PROJECTS":
-                        $p = $this->projects;
+                        $p = "Projects/";
                         break;
 
                 case "SYSENTRYBASE":
@@ -426,7 +402,7 @@ class LabNotebookFunctions{
                         break;
 
                case "SYSPROJECTBASE":
-                        $p = $this->sysprojectBase;
+                        $p = "MediaWiki:ProjectContentDefault";
                         break;
 
                 case "ENTRYBASE":
@@ -434,7 +410,7 @@ class LabNotebookFunctions{
                         break;
 
                 case "PROJECTBASE":
-                        $p = $this->projectBase;
+                        $p = "Project_Base";
                         break;
 
         	case "USERNAME":
