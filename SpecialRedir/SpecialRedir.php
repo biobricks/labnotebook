@@ -35,10 +35,10 @@ class Redir extends SpecialPage{
             }
             $m = substr($date, 5, 2);
             $y = substr($date, 0, 4);
-            $text->mText = str_replace ("#last_month", $m - 1, $text->mText);
-            $text->mText = str_replace ("#this_month", $m, $text->mText);
-            $text->mText = str_replace ("#next_month", $m + 1, $text->mText);
-            $text->mText = str_replace ("#year", $y, $text->mText);
+            $text->__construct(str_replace ("#last_month", $m - 1, $text->getNativeData()));
+            $text->__construct(str_replace ("#this_month", $m, $text->getNativeData()));
+            $text->__construct(str_replace ("#next_month", $m + 1, $text->getNativeData()));
+            $text->__construct(str_replace ("#year", $y, $text->getNativeData()));
             $a = WikiPage::factory($t);
             $a->doEditContent($text, "Autocreate Month $month Entry for $base", EDIT_NEW);
             $this->addYear($base, $date);
@@ -69,7 +69,7 @@ class Redir extends SpecialPage{
                     $text = $ba->getContent();
                 }
             }
-            $text->mText = str_replace ("#year", $year, $text->mText);
+            $text->__construct(str_replace ("#year", $year, $text->getNativeData()));
 
             $a = WikiPage::factory($t);
             $a->doEditContent($text, "Autocreate Year $year Entry for $base", EDIT_NEW);
@@ -154,7 +154,7 @@ class Redir extends SpecialPage{
             $title = $this->addEntry($base, $date);
             $url = $title->getFullURL();
             wfDebug ("SpecialRedir::execute: Redirecting to $url\n"); 
-            $wgOut->setSquidMaxage( 1200 );
+            $wgOut->setCdnMaxage( 1200 );
             $wgOut->redirect($url, '301');
         }
     }
