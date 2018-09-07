@@ -25,7 +25,7 @@ class doathing extends ApiBase{
         $this->getResult()->addValue( null, 'athing',"we're doing a thing");
         $page = WikiPage::factory(Title::newFromText('User:Fermenter_User/Notebook/MOLD_C2'));
         $content = $page->getContent();
-        $content->mText = str_replace('6sRu1,38@6c-bq%_','uVmvKkXrHBr',$content->mText);
+        $content->__construct(str_replace('6sRu1,38@6c-bq%_','uVmvKkXrHBr',$content->getNativeData()));
         $page->doEditContent($content,'replace text in fucked up page that loads forever',EDIT_UPDATE);
         $this->getResult()->addValue( null, 'athing',"we did a thing");
         return $this->getResult();

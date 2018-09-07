@@ -392,7 +392,7 @@ class NewNotebookDo extends ApiBase{
 		if (!$t->exists()){
 			wfDebug("attempting to create page $name");
 			$content = $this->getContent($contentPage);
-			$content->mText = str_replace($this->categoryTag, '', $content->mText);
+            $content->__construct(str_replace($this->categoryTag,'',$content->getNativeData()));
             $a = WikiPage::factory($t);
 			wfDebug("setPage: new article created for page $name");
 			if ($this->testMode == false){

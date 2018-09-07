@@ -109,7 +109,7 @@ class LabNotebookFunctions{
             $a->doEdit($text, "Autocreate New Entry for Notebook $notebookBase", 
 		EDIT_NEW|EDIT_AUTOSUMMARY);
         }
-        $wgOut->setSquidMaxage( 1200 );
+        $wgOut->setCdnMaxage( 1200 );
         $wgOut->redirect($t->getFullURL( '' ), '301');
     }
 
