@@ -24,6 +24,6 @@ class NewNotebook extends SpecialPage {
         $param = $request->getText( 'param' ); # Get request data from, e.g.
         $output->addModules( 'ext.LabNotebook.oneclick' );
         $output->addHTML(file_get_contents(__DIR__.'/includes/create.html'));
-        $output->addWikiText('[[category:OWWLabNotebookV1]]');
+        $output->addWikiTextAsContent('[[category:OWWLabNotebookV1]]');
     }
 }
