@@ -64,7 +64,7 @@ function getDateList($base, $year, $month){
         $text = str_replace(' ', '_', $text);
 
 	// get the db read not-a-pointer
-	$dbr = wfGetDB(DB_SLAVE);
+	$dbr = wfGetDB(DB_REPLICA);
 
 	// format and execute the query
         $query = "SELECT page_title FROM " . $dbr->tableName('page') . "  where page_namespace = $ns AND " . 
@@ -113,7 +113,7 @@ function renderLNCalendarDo($input) {
 
     $wgOut->addModules("ext.LabNotebook.calendar");
 
-    $wgParser->disableCache();
+    $wgParser->getOutput()->updateCacheExpiry( 60 );
     if (!$wgTitle){
         return '';
     }
