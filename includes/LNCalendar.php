@@ -109,11 +109,13 @@ function getBasePage($page, $type){
 }
 
 function renderLNCalendarDo($input) {
-    global $wgOut, $wgTitle, $wgParser, $wgUser;
+    global $wgOut, $wgTitle, $wgUser;
 
     $wgOut->addModules("ext.LabNotebook.calendar");
 
-    $wgParser->getOutput()->updateCacheExpiry( 60 );
+    $parser = \MediaWiki\MediaWikiServices::getInstance()->getParser();
+    $parser->getOutput()->updateCacheExpiry( 60 );
+
     if (!$wgTitle){
         return '';
     }
